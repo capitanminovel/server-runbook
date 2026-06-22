@@ -42,6 +42,34 @@ Any `root` directive points to a directory being served. Make sure:
 - `.git` folders are not inside those directories
 - No debug endpoints are accessible in production
 
+## Why Cloudflare IPs Show Up in Attack Logs
+
+Sometimes nginx access logs show attack traffic coming from Cloudflare IP ranges (`104.23.x.x`, `172.70.x.x`, `162.158.x.x`). This doesn't mean Cloudflare is attacking you.
+
+Attackers can route their scanner traffic through Cloudflare's network by putting a Cloudflare-proxied domain in front of their tool. The actual scanner is somewhere else; the Cloudflare edge node is just a relay. Your nginx log sees the edge node IP, not the attacker's real IP.
+
+**What to do:** Don't block the Cloudflare IP range — that would break legitimate Cloudflare-proxied traffic. fail2ban handles this correctly by banning the specific IP after enough bad requests, regardless of whether it's a direct attacker or a proxy.
+
+## The `.git` Directory Risk
+
+If you clone a git repo into a directory that nginx serves as static files, the `.git/` folder is accessible over HTTP. This is a real problem.
+
+Git stores the full history and content of a repo as object files under `.git/objects/`. An attacker can request these files one by one and reconstruct your entire source code — including any hardcoded secrets, API keys, or credentials that were ever committed, even if they were removed later.
+
+There are automated tools built specifically to do this (e.g. `git-dumper`).
+
+**How to block it in nginx:**
+```nginx
+location ~ /\.git {
+    deny all;
+    return 404;
+}
+```
+
+**The broader rule:** any file or directory starting with `.` in a webroot is probably dangerous to expose. The nginx block `location ~ /\.(git|env|htaccess)` covers the most common cases.
+
+On this server: Pi-hole's admin UI source lives at `/var/www/html/admin/` and includes a `.git` directory. This block is in the nginx default server config.
+
 ## Useful Tools for Monitoring
 
 **fail2ban** — Watches logs and auto-bans IPs that repeatedly hit 404s or fail SSH logins. Reduces noise significantly.
