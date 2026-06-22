@@ -64,33 +64,12 @@ This is standard internet background noise for any public IP. Bots constantly sc
 UFW's default-deny stops port scans. fail2ban adds active banning for repeat offenders. nginx returning 404 stops web probes.
 
 ## What I learned
-
-### Internet background noise is constant and automated
-Any public IP gets scanned within minutes of coming online. These aren't humans — they're bots running 24/7 against every IPv4 address. The `.env` scanner at 01:00 tried 126 paths in sequence; that's a script, not a person. The PHP webshell scanner at 14:00 had a list of hundreds of filenames it tried one by one. The SSH attacker at 92.182.32.104 sent 873 attempts — bots just hammer until banned or successful. This is background radiation on the internet. It never stops.
-
-### UFW blocks don't mean silence — they mean your server saw the packet and dropped it
-When UFW blocks something, the packet still arrived at your network interface. The kernel received it, UFW inspected it, and dropped it. You still pay a tiny bit of CPU and bandwidth per blocked packet. 4,456 UFW blocks in 24h is trivial — but if a scan were 10x more aggressive, you'd see iowait and CPU tick up from kernel processing alone. This is why blocking at the source (ISP/DigitalOcean firewall) is better than UFW if volume becomes a problem.
-
-### fail2ban works by watching logs and writing firewall rules — it's not magic
-fail2ban reads log files (nginx access log, sshd journal) on a timer, runs regex filters against new lines, counts matches per IP, and when an IP hits `maxretry` within `findtime`, it adds a ban rule. With `banaction = ufw`, it literally runs `ufw insert 1 deny from <IP>`. When `bantime` expires, it removes the rule. That's the whole mechanism. Understanding this matters because:
-- fail2ban only catches things *after* they show up in a log — it can't block the first N attempts (up to maxretry)
-- If a log format changes (nginx config update, different log path), the jail silently stops working
-- `fail2ban-client status <jail>` is how you verify it's actually reading the right logs
-
-### The `jail.local` / `jail.conf` split exists for package safety
-`/etc/fail2ban/jail.conf` is owned by the package. When fail2ban upgrades, that file gets overwritten. `jail.local` is your file — it overrides anything in `jail.conf` and never gets touched by apt. Same pattern applies to nginx (`/etc/nginx/nginx.conf` vs your site files in `sites-available/`) and many other services. The principle: **your config goes in the override file, never in the package-owned file**.
-
-### A `.git` directory in a webroot is a repo exfiltration risk
-When you clone a git repo into a web-served directory, the `.git/` folder contains the full object database — meaning someone can reconstruct your entire source code by requesting git object files one by one. There are automated tools that do exactly this. The risk here (Pi-hole admin UI source) was low since it's public code anyway, but if it were *your* app source with hardcoded credentials or business logic, it would be a serious leak. Rule: never clone into a webroot. If you must, block `/.git` in nginx.
-
-### Why PHP webshell scans hit a FastAPI server
-The scanners don't know what tech stack you're running. They probe everything. A PHP webshell is a file like `shell.php` that an attacker previously uploaded (through a file upload vulnerability) and can now use to run commands on the server. The scan is checking: "did anyone leave a shell here?" nginx returning 404 means the file doesn't exist — exactly right. This is why nginx's default `try_files $uri =404` behavior is your friend.
-
-### Cloudflare IPs in nginx logs don't mean Cloudflare is attacking you
-Cloudflare runs a massive CDN. Attackers can route their traffic through Cloudflare's network (by putting a Cloudflare-proxied domain in front of their scanner). The IP in your nginx log is the Cloudflare edge node, not the actual attacker. This is why you can't just block `104.23.x.x` — it would block legitimate Cloudflare traffic too. fail2ban handles this correctly by banning per-IP after enough bad requests, regardless of whether it's a real attacker or a proxied one.
-
-### `sar` vs `top` — snapshot vs history
-`top` and `ps aux` show you what's happening *right now*. `sar` (System Activity Reporter) stores samples every 10 minutes in `/var/log/sysstat/saXX` (XX = day of month). When investigating a spike that already happened, `sar` is the only tool that has historical data. `sar -u` shows CPU, `sar -n DEV` shows network, `sar -d` shows disk I/O. If sysstat isn't installed, you have no historical record — that's why it matters to have it running.
+- `sar` has historical CPU data (10-min samples) — `top`/`ps` only show right now. See `concepts/cpu-spike-investigation.md`
+- fail2ban watches logs and writes UFW rules — it's not magic. See `concepts/fail2ban.md`
+- Never edit `jail.conf` directly — always `jail.local`. Same override pattern as nginx sites-available
+- SSH brute force is constant but harmless with key-based auth + fail2ban. See `concepts/ssh-brute-force.md`
+- `.git` in a webroot lets attackers reconstruct your full source. Always block it in nginx. See `concepts/web-scanning-bots.md`
+- Cloudflare IPs in nginx attack logs = attacker routing through Cloudflare, not Cloudflare itself. See `concepts/web-scanning-bots.md`
 
 ## Commands for ongoing monitoring
 ```bash
