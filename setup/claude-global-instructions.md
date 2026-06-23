@@ -1,21 +1,3 @@
-# Claude Global Instructions (CLAUDE.md)
-
-This is the master copy of `~/.claude/CLAUDE.md` — the global instructions file that Claude Code CLI reads on any machine it runs on.
-
-## How to deploy to a new machine
-
-```bash
-mkdir -p ~/.claude
-curl -o ~/.claude/CLAUDE.md https://raw.githubusercontent.com/capitanminovel/server-runbook/main/setup/claude-global-instructions.md
-# then remove the header/deploy section — paste only the content below the line
-```
-
-Or just copy-paste the content below manually into `~/.claude/CLAUDE.md`.
-
-**On this server** the file lives at: `/root/.claude/CLAUDE.md`
-
----
-
 # Global Claude Instructions — capitanminovel
 
 ## Who I Am
@@ -60,6 +42,23 @@ git add .
 git commit -m "short description of what was documented"
 git push
 ```
+
+## Always-On: Explain as We Go
+
+**When introducing a tool, concept, config pattern, or non-obvious decision, explain it inline — without being asked.**
+
+What to explain automatically:
+- Any command that isn't obvious (what it does, why we're running it)
+- Any config option that has a non-obvious effect
+- Any architectural choice (why this approach vs another)
+- Any new tool or service being introduced for the first time
+
+How to explain:
+- One short paragraph max — what it is and why it matters here
+- Assume no prior knowledge of this specific thing, but don't over-explain basics
+- If it's complex enough to deserve a full writeup, flag it: "This is worth a `concepts/` entry — want me to write one?"
+
+The goal: you should never finish a session feeling like things were done *to* the server without understanding what happened.
 
 ## General Working Rules
 - Explain before doing anything non-trivial
