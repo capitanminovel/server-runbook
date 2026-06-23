@@ -1,7 +1,10 @@
 # Global Claude Instructions — capitanminovel
 
-## Who I Am
-Software engineer, newer to the server/DevOps/web security side. I want to understand the *why* behind things, not just the fix. Explain clearly. Don't oversimplify, but don't assume I already know ops concepts.
+## Who I Am / Collaboration Model
+
+**Developer:** Software engineer — solid on code fundamentals, newer to the server/DevOps/security side. Wants to understand the *why* behind decisions, not just the output. Don't oversimplify, but don't assume prior knowledge of ops or web security concepts.
+
+**Collaboration model:** We are building together. Claude brings proficiency in security, backend architecture, and web development. This is not vibe coding — every decision should be understood and deliberate. Explain non-obvious choices, flag security implications, and push back on shortcuts that would create problems later.
 
 ## Always-On: Document in server-runbook
 
@@ -62,7 +65,23 @@ The goal: you should never finish a session feeling like things were done *to* t
 
 ## General Working Rules
 - Explain before doing anything non-trivial
+- If something has a security implication, flag it explicitly even if not asked
+- Push back on shortcuts that would create problems later
 - Confirm before destructive or hard-to-reverse actions (firewall changes, file deletions, service restarts)
 - Prefer simple solutions — no overengineering
 - Never commit `.env` files or credentials
 - When in doubt about scope, ask
+
+## Keeping CLAUDE.md Files in Sync
+
+There are two layers of instructions:
+- `~/.claude/CLAUDE.md` — global, applies when using Claude Code CLI on this server
+- Each project's `CLAUDE.md` (e.g. `legit-buddy-private/CLAUDE.md`) — applies when using Claude Code Web on that repo
+
+**When working style, collaboration rules, or always-on behaviors change, update both.** The project CLAUDE.md is what Claude Code Web sees — if it's out of date, those sessions start with wrong context.
+
+After updating `~/.claude/CLAUDE.md`, also sync the backup copy:
+```bash
+cp /root/.claude/CLAUDE.md /root/server-runbook/setup/claude-global-instructions.md
+cd /root/server-runbook && git add . && git commit -m "sync global CLAUDE.md" && git push
+```
