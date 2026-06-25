@@ -269,6 +269,79 @@ To re-theme for another store, change these two hex values and the logo `src`.
 
 ---
 
+## Later Session Changes (2026-06-24, evening)
+
+### 8. Strain type label rename + filter grouping fix
+
+**Problem:** "Hybrid (Sativa)" and "Hybrid (Indica)" were both bucketed under the "Hybrid" type filter, and the badge text was awkward.
+
+**Fix in `build_card()` in `build_preview.py`:**
+
+```python
+# Rename display label
+_STRAIN_LABELS = {"Hybrid (Sativa)": "Sativa Hybrid", "Hybrid (Indica)": "Indica Hybrid"}
+strain_label = _STRAIN_LABELS.get(strain_raw, strain_raw)
+
+# Fix filter key so they appear under the right chip
+_st = (p.get("strain_type") or "").lower()
+if "sativa" in _st:   strain_key = "sativa"
+elif "indica" in _st: strain_key = "indica"
+elif "hybrid" in _st: strain_key = "hybrid"
+elif "cbd"    in _st: strain_key = "cbd"
+else:                 strain_key = _st.split()[0] if _st else ""
+```
+
+`strain_class()` already does `"sativa" in t` / `"indica" in t` substring checks so badge colors remain correct without changes.
+
+---
+
+### 9. Remove CBD from type filter; add Deep Sleep mood
+
+**Type filter:** removed the CBD chip — no products currently carry it as a primary type at this store.
+
+**Deep Sleep mood chip (🌙):**
+
+Added as a stricter variant of Wind Down. The distinction:
+- **Wind Down** — Myrcene + Linalool, general relaxation. Myrcene alone can score it mid-high.
+- **Deep Sleep** — Myrcene MUST be the #1 terpene AND Linalool must be present. Both co-dominant = true knock-out sedation. Fewer products qualify.
+
+**Changes in `build_preview.py`:**
+
+1. Mood chip HTML (in mood bar):
+```html
+<button class="mood-chip" data-mood="deep-sleep" onclick="filterMood(this)"
+  title="Myrcene dominant + Linalool — GABA-A sedation + sleep latency reduction.">🌙 Deep Sleep</button>
+```
+
+2. MOOD_MAP entry (JS):
+```javascript
+'deep-sleep': {
+  label: 'Deep Sleep',
+  science: 'Myrcene (GABA-A sedation) + Linalool (sleep latency reduction via adenosine) — both must be dominant',
+  effects:  ['Sleepy','Body High','Relaxing','Calming'],
+  terpenes: ['Myrcene','Linalool','Caryophyllene']
+},
+```
+
+3. MOOD_INFO entry (for "How it works" modal):
+```javascript
+{ key:'deep-sleep', icon:'🌙', name:'Deep Sleep',
+  science:'A stricter version of Wind Down — both Myrcene AND Linalool must be dominant terpenes...',
+  terps:['Myrcene','Linalool','Caryophyllene'] },
+```
+
+**Changes in `enrich_strains.py`:** added `deep_sleep` to `RATINGS_PROMPT` so future new strains get a score:
+```
+- deep_sleep: Myrcene MUST be #1 terpene (if not → max 5). Linalool MUST be present (if absent → max 4).
+  Both dominant → can reach 9-10. Stricter than wind_down.
+```
+
+Also updated the example calibration line and the JSON template string to include `"deep_sleep":0`.
+
+**Note:** existing strains already in `strains_enriched.json` won't have a `deep_sleep` key in their `mood_ratings`. The frontend falls back to the computed `moodScore()` formula for any missing mood key, so everything still works — it just uses the terpene formula instead of Claude's rating until strains are re-enriched.
+
+---
+
 ## Applying These Changes to legit-buddy-api
 
 legit-buddy-api has the same `build_preview.py` structure. The JS patterns (type filter, modal rows) are identical. The main difference is file paths:
