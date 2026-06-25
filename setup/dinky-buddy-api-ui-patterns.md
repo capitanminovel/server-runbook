@@ -185,6 +185,90 @@ s.lineage && s.lineage !== 'N/A — distillate edible'
 
 ---
 
+## Earlier Session Fixes (same day, before the UI work above)
+
+These were done in a prior session and are captured here for completeness.
+
+### 5. Scraper — storeid header + last_store cookie (WAF bypass)
+
+**Problem:** The Sweed POS API at `/_api/Products/GetProductList` was returning empty or blocked responses. The direct HTTP strategy was failing because the request was missing required headers that the browser sends automatically.
+
+**Fix:** Added `storeid` as a request header and a `last_store` cookie containing a URL-encoded JSON blob with the store identity. This matches what the Sweed frontend sends and gets past the WAF check.
+
+```python
+STORE_ID = 609  # Dinkytown store ID (from browser Network tab)
+
+import urllib.parse as _urlparse, json as _json
+_last_store = _urlparse.quote(_json.dumps({
+    "id": STORE_ID,
+    "url": f"https://{STORE_DOMAIN}/{STORE_SLUG}",
+    "routeName": f"/{STORE_SLUG}",
+}))
+
+HEADERS = {
+    ...
+    "storeid": str(STORE_ID),
+    "ssr": "false",
+    "Cookie": f"last_store={_last_store}; swa_Common/isAgeChecked=true",
+}
+```
+
+**How to find the store ID for a new store:** open the store's menu in Chrome, open DevTools → Network tab, filter for `GetProductList`, click the request, look at the request headers for `storeid` or the request body for `storeId`.
+
+**Note:** Even with this, the WAF still blocks the direct API call in GitHub Actions (different IP, no browser session). Playwright is the real fallback that runs in production — the direct API works locally but usually fails in CI.
+
+---
+
+### 6. UTF-8 BOM fix
+
+**Problem:** Files copied from another project had a UTF-8 BOM (`﻿`, `﻿`) at the start. Python's `json.load()` choked on it, and the em-dash characters in comments appeared as garbled multi-byte sequences (`â€"` instead of `—`).
+
+**Fix — two parts:**
+
+**a) Strip BOM from JSON files** (`products.json`, `strains_enriched.json`, `schedule.json`, `debug_api.json`) — open in a text editor set to UTF-8 without BOM and re-save, or run:
+```python
+for path in ['docs/products.json', 'docs/strains_enriched.json', ...]:
+    text = open(path, encoding='utf-8-sig').read()  # utf-8-sig strips BOM on read
+    open(path, 'w', encoding='utf-8').write(text)
+```
+
+**b) Make `load_db()` in `scraper.py` BOM-tolerant** as a permanent safeguard:
+```python
+def load_db() -> dict:
+    if DATA_FILE.exists():
+        with open(DATA_FILE, encoding='utf-8-sig') as f:  # utf-8-sig = strip BOM if present
+            return json.load(f)
+    return {...}
+```
+
+`utf-8-sig` is safe to use even when there's no BOM — it just reads normally in that case.
+
+---
+
+### 7. Rebrand — yellow/black color theme + Dinky Dope logo
+
+This project was initially copied from legit-buddy-api and needed full rebranding for Dinky Dope.
+
+**Colors changed:** brand green (`#1a7a4a`) replaced with Dinky Dope gold (`#C9A000` light mode, `#F5C228` dark mode). Updated in CSS variables, mood chip active states, schedule today highlight, terpene pill colors, and the top announcement bar.
+
+**Logo:** GIF mascots replaced with the official Dinky Dope logo image pulled from `dinkydope.com`.
+
+**Text/filenames:** all "legit", "Legit", "south-metro", "legit-buddy" references replaced with "dinky", "Dinky Dope", "dinkytown", "dinky-buddy". This includes the `.docx` export filenames (`dinky-available-guide.docx`, `dinky-master-guide.docx`).
+
+**Where the brand color is set** in `build_preview.py`:
+```css
+:root {
+  --brand: #C9A000;   /* light mode */
+}
+body.dark {
+  --brand: #F5C228;   /* dark mode */
+}
+```
+
+To re-theme for another store, change these two hex values and the logo `src`.
+
+---
+
 ## Applying These Changes to legit-buddy-api
 
 legit-buddy-api has the same `build_preview.py` structure. The JS patterns (type filter, modal rows) are identical. The main difference is file paths:
