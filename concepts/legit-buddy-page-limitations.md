@@ -52,3 +52,21 @@ Attempts were made to add a one-click refresh button to the GitHub Pages sites s
 - **Sold Out — Last 2 Days** — shows products that dropped out of inventory within 2 days. Products gone longer than that disappear from the sold section silently.
 
 These windows are hardcoded in `build_preview.py` / the pipeline and can be changed if needed.
+
+---
+
+## 5. API Keys and Repository Are Currently Owned and Managed by Jose
+
+This tool runs on Jose's GitHub account and uses his Anthropic API key. That means:
+
+- **GitHub repo:** The code and the automation (scrapes, deploys) live under Jose's GitHub account. If Jose stops managing it, the pipeline stops.
+- **Anthropic API key:** The AI that generates strain profiles (lineage, therapeutic uses, mood ratings) runs on Jose's key. If usage grows or the key is revoked, enrichment stops.
+- **No handoff path yet:** There is no self-service way for the store to take over — it requires someone technical to manage.
+
+**What this means going forward for a new store:**
+
+The store owner has two options:
+1. **Jose manages everything** — Jose owns the repo and key, charges a monthly fee that covers management + API costs. Store gets a working tool, no technical burden.
+2. **Store owns their own accounts** — Store creates their own GitHub account and Anthropic API key (both free to set up). Jose builds and hands off, but store needs someone internal or retains Jose for ongoing changes.
+
+**Recommendation:** Option 1 is cleaner for a non-technical owner. Jose manages the infrastructure, bills monthly, and is the single point of contact. If they ever want out, the code and data can be exported.
