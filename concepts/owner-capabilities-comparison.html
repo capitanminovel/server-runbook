@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dinky Dope / MN Legit — Menu Tool: What It Does & What's Next</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8f8f5;
+      color: #1a1a1a;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .top-bar {
+      background: #1A1A1A;
+      color: #F5C228;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+    header {
+      background: white;
+      border-bottom: 2px solid #1A1A1A;
+      padding: 28px 40px 24px;
+    }
+    .header-label {
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -.02em;
+      color: #1A1A1A;
+      margin-bottom: 6px;
+    }
+    .sub {
+      color: #555;
+      font-size: .92rem;
+    }
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 36px 32px 80px;
+    }
+
+    /* ── Section headings ── */
+    .section { margin-bottom: 48px; }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #1A1A1A;
+      border-left: 4px solid #F5C228;
+      padding-left: 14px;
+      margin-bottom: 20px;
+    }
+
+    /* ── Feature grid ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    .feature-card {
+      background: white;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .feature-card-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .feature-card-name {
+      font-weight: 700;
+      font-size: .92rem;
+      margin-bottom: 5px;
+      color: #1A1A1A;
+    }
+    .feature-card-desc { font-size: .82rem; color: #555; line-height: 1.5; }
+
+    /* ── Limitation cards ── */
+    .limit-list { display: flex; flex-direction: column; gap: 14px; }
+    .limit-card {
+      background: #fffbeb;
+      border: 1.5px solid #fcd34d;
+      border-radius: 12px;
+      padding: 18px 22px;
+    }
+    .limit-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .limit-icon { font-size: 1.25rem; flex-shrink: 0; }
+    .limit-name { font-weight: 700; font-size: .95rem; color: #92400e; }
+    .limit-body { font-size: .84rem; color: #555; line-height: 1.55; }
+    .limit-body strong { color: #1a1a1a; }
+    .limit-fix {
+      margin-top: 8px;
+      font-size: .82rem;
+      font-weight: 600;
+      color: #16a34a;
+    }
+    .limit-fix::before { content: "Fix: "; font-weight: 800; }
+
+    /* ── Comparison table ── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+    }
+    .compare-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 800;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      background: #1A1A1A;
+      color: #F5C228;
+    }
+    .compare-table th:first-child { border-radius: 10px 0 0 0; }
+    .compare-table th:last-child  { border-radius: 0 10px 0 0; }
+    .compare-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(even) td { background: #fafafa; }
+    .compare-table td:first-child { font-weight: 600; color: #1a1a1a; width: 35%; }
+    .yes  { color: #16a34a; font-weight: 700; }
+    .no   { color: #dc2626; font-weight: 700; }
+    .part { color: #d97706; font-weight: 700; }
+
+    /* ── Upgrade section ── */
+    .upgrade-box {
+      background: #1A1A1A;
+      color: white;
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .upgrade-box h2 {
+      color: #F5C228;
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+      letter-spacing: -.01em;
+    }
+    .upgrade-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .upgrade-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: .88rem;
+      color: #e5e7eb;
+      line-height: 1.5;
+    }
+    .upgrade-list li .bullet {
+      color: #F5C228;
+      font-weight: 900;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .upgrade-list li strong { color: white; }
+
+    /* ── Future features ── */
+    .future-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .future-card {
+      background: white;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: .82rem;
+    }
+    .future-card-name {
+      font-weight: 700;
+      font-size: .85rem;
+      color: #1A1A1A;
+      margin-bottom: 4px;
+    }
+    .future-card-desc { color: #555; line-height: 1.5; }
+    .badge-phase {
+      display: inline-block;
+      font-size: .65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .phase-now { background: #dcfce7; color: #15803d; }
+    .phase-next { background: #dbeafe; color: #1d4ed8; }
+    .phase-later { background: #f3f4f6; color: #6b7280; }
+
+    /* ── Bottom note ── */
+    .bottom-note {
+      background: white;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 18px 22px;
+      font-size: .82rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    .bottom-note strong { color: #1a1a1a; }
+
+    /* ── Data callout row ── */
+    .stats-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .stat-box {
+      background: white;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 14px 20px;
+      text-align: center;
+      flex: 1;
+      min-width: 140px;
+    }
+    .stat-num { font-size: 1.8rem; font-weight: 900; color: #F5C228; line-height: 1; }
+    .stat-label { font-size: .74rem; color: #555; margin-top: 4px; font-weight: 600; }
+
+    @media(max-width: 640px) {
+      header { padding: 20px 18px; }
+      main { padding: 24px 16px 60px; }
+      h1 { font-size: 1.4rem; }
+      .compare-table { font-size: .78rem; }
+      .compare-table td, .compare-table th { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">Prepared for: Owner/Buyer Conversation — Dinky Dope &amp; MN Legit Cannabis</div>
+
+<header>
+  <div class="header-label">Capabilities &amp; Limitations Overview</div>
+  <h1>Automated Cannabis Menu Tool</h1>
+  <p class="sub">What's built today, what's constrained by the free platform, and what the hosted version unlocks.</p>
+</header>
+
+<main>
+
+  <!-- ── What's live today ── -->
+  <section class="section">
+    <div class="section-title">What's Running Right Now</div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-num">50</div>
+        <div class="stat-label">Dinky Dope products tracked</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">27</div>
+        <div class="stat-label">MN Legit products in stock</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">5×</div>
+        <div class="stat-label">daily auto-scrapes per store</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">9</div>
+        <div class="stat-label">mood filters (terpene-scored)</div>
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">🔄</div>
+        <div class="feature-card-name">Daily Automated Menu</div>
+        <div class="feature-card-desc">Scrapes live inventory directly from Sweed POS — no manual copy-paste. New products appear automatically. Sold-out items are flagged and removed.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🧬</div>
+        <div class="feature-card-name">AI Strain Profiles</div>
+        <div class="feature-card-desc">Every new strain is enriched with lineage, therapeutic uses, aroma, and terpene profiles via Claude AI. Written once and cached — no repeat API cost.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">😴</div>
+        <div class="feature-card-name">Mood Filter (9 vibes)</div>
+        <div class="feature-card-desc">Products scored 0–10 for Wind Down, Deep Sleep, Anxiety Relief, Lift Up, Creative, Social, Pain &amp; Body, Just Happy, Aphrodisiac — all from COA terpene data, not marketing copy.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🔍</div>
+        <div class="feature-card-name">Smart Search</div>
+        <div class="feature-card-desc">Staff can search by symptom, terpene, or mood ("PTSD", "Myrcene", "creative") and instantly see ranked results across the full inventory.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">✨</div>
+        <div class="feature-card-name">New Arrivals + Sold Out Tracker</div>
+        <div class="feature-card-desc">Auto-flags products added in the last 3 days. Shows sold-out items for 2 days after they leave inventory — useful for customer conversations.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📋</div>
+        <div class="feature-card-name">Staff Strain Guide Builder</div>
+        <div class="feature-card-desc">Staff tap products to build a personal profile, then download a .docx strain guide for customer-facing use or shift prep.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Limitations of free tier ── -->
+  <section class="section">
+    <div class="section-title">Known Limitations (Free / GitHub Pages Tier)</div>
+    <p style="font-size:.86rem;color:#555;margin-bottom:18px">These are the constraints of running on GitHub's free infrastructure. Each one has a known fix if the tool moves to the hosted server.</p>
+
+    <div class="limit-list">
+
+      <div class="limit-card">
+        <div class="limit-card-head">
+          <span class="limit-icon">⏱️</span>
+          <span class="limit-name">Menu Updates Are Delayed 1–4 Hours</span>
+        </div>
+        <div class="limit-body">
+          GitHub's free runner queue is shared across all users. Scheduled scrapes are queued and delayed by <strong>1–4 hours</strong> past the scheduled time on busy days.
+          If inventory changes in Sweed at 9 AM, the menu may not reflect it until 11 AM or later.
+        </div>
+        <div class="limit-fix">Hosted version runs cron directly on the server — updates fire at the exact scheduled time, no queue.</div>
+      </div>
+
+      <div class="limit-card">
+        <div class="limit-card-head">
+          <span class="limit-icon">🚫</span>
+          <span class="limit-name">No Manual Refresh Button</span>
+        </div>
+        <div class="limit-body">
+          GitHub automatically revokes any access token embedded in a public HTML page. Multiple attempts were made to add a one-click refresh button — GitHub kills the token every time.
+          The only workaround is going to GitHub → Actions → Run Workflow manually, which requires a GitHub account and takes 5–10 minutes.
+        </div>
+        <div class="limit-fix">Hosted version has a PIN-protected "Refresh Menu Now" button that triggers an immediate scrape in ~30 seconds.</div>
+      </div>
+
+      <div class="limit-card">
+        <div class="limit-card-head">
+          <span class="limit-icon">🔬</span>
+          <span class="limit-name">Mood Scores Are Only as Good as COA Data in Sweed</span>
+        </div>
+        <div class="limit-body">
+          Every mood score is derived from the terpene data entered into Sweed POS. If terpenes are <strong>left blank</strong>, the app falls back to general strain knowledge (generic, not batch-specific). If terpenes are <strong>copied from a website</strong> instead of the actual lab COA, scores reflect brand claims — not the real product.
+          Terpene order matters too: COA position #1 is weighted most heavily.
+        </div>
+        <div class="limit-fix">Operational fix — not a code issue. Staff must enter terpenes from the actual COA PDF in the exact order listed on the lab report, at intake. This is a product intake SOP, not a software limitation.</div>
+      </div>
+
+      <div class="limit-card">
+        <div class="limit-card-head">
+          <span class="limit-icon">📅</span>
+          <span class="limit-name">"New" and "Sold Out" Windows Are Fixed</span>
+        </div>
+        <div class="limit-body">
+          <strong>New in Last 3 Days</strong> — if a product was already in Sweed before the scraper first ran, it won't appear as new even if staff have never seen it.
+          <strong>Sold Out — Last 2 Days</strong> — products gone longer than 2 days disappear from the sold section silently. These windows (3 days / 2 days) are currently hardcoded.
+        </div>
+        <div class="limit-fix">Windows can be changed to any value on request — a 5-minute code change. No architectural issue.</div>
+      </div>
+
+      <div class="limit-card">
+        <div class="limit-card-head">
+          <span class="limit-icon">🔓</span>
+          <span class="limit-name">No Access Control — Public by Default</span>
+        </div>
+        <div class="limit-body">
+          GitHub Pages is a public URL. Anyone who finds the link can see the full menu. There is no login, no PIN wall for the main menu, and no way to restrict who views the data. Competitor stores could potentially monitor inventory.
+        </div>
+        <div class="limit-fix">Hosted version can add PIN or login protection to the entire page, or specific sections. Already done for the Schedule section in the private version.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Comparison table ── -->
+  <section class="section">
+    <div class="section-title">Free (GitHub Pages) vs. Hosted (Server) — Side by Side</div>
+    <div style="overflow-x:auto;border-radius:12px;border:1.5px solid #e5e7eb">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free / GitHub Pages</th>
+            <th>Hosted / Server (DigitalOcean)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Daily auto-scrape from Sweed POS</td>
+            <td><span class="yes">✓ Yes</span></td>
+            <td><span class="yes">✓ Yes</span></td>
+          </tr>
+          <tr>
+            <td>AI strain profiles (lineage, aroma, therapeutic)</td>
+            <td><span class="yes">✓ Yes</span></td>
+            <td><span class="yes">✓ Yes</span></td>
+          </tr>
+          <tr>
+            <td>Mood filtering (9 vibes, terpene-scored)</td>
+            <td><span class="yes">✓ Yes</span></td>
+            <td><span class="yes">✓ Yes</span></td>
+          </tr>
+          <tr>
+            <td>Staff strain guide builder + .docx export</td>
+            <td><span class="yes">✓ Yes</span></td>
+            <td><span class="yes">✓ Yes</span></td>
+          </tr>
+          <tr>
+            <td>Search by symptom, terpene, or mood</td>
+            <td><span class="yes">✓ Yes</span></td>
+            <td><span class="yes">✓ Yes</span></td>
+          </tr>
+          <tr>
+            <td>New arrivals + sold-out tracker</td>
+            <td><span class="yes">✓ Yes</span></td>
+            <td><span class="yes">✓ Yes</span></td>
+          </tr>
+          <tr>
+            <td>Dark mode</td>
+            <td><span class="yes">✓ Yes</span></td>
+            <td><span class="yes">✓ Yes</span></td>
+          </tr>
+          <tr>
+            <td>Update timing accuracy</td>
+            <td><span class="part">⚠ 1–4 hour delay possible</span></td>
+            <td><span class="yes">✓ Exact time, every time</span></td>
+          </tr>
+          <tr>
+            <td>Manual "Refresh Now" button for staff</td>
+            <td><span class="no">✗ Not possible (GitHub kills tokens)</span></td>
+            <td><span class="yes">✓ PIN-protected refresh endpoint</span></td>
+          </tr>
+          <tr>
+            <td>Access control / PIN protection</td>
+            <td><span class="no">✗ Fully public URL</span></td>
+            <td><span class="yes">✓ PIN gate on any section or full page</span></td>
+          </tr>
+          <tr>
+            <td>Custom domain (e.g. menu.dinky.com)</td>
+            <td><span class="part">⚠ Possible but limited to GitHub subdomain by default</span></td>
+            <td><span class="yes">✓ Full custom domain + SSL</span></td>
+          </tr>
+          <tr>
+            <td>Schedule display for staff</td>
+            <td><span class="no">✗ Not available</span></td>
+            <td><span class="yes">✓ PIN-protected schedule tab built</span></td>
+          </tr>
+          <tr>
+            <td>Customer-facing version of the page</td>
+            <td><span class="no">✗ Staff tool only</span></td>
+            <td><span class="yes">✓ Buildable — separate route, different data shown</span></td>
+          </tr>
+          <tr>
+            <td>Future API features (loyalty, SMS, alerts)</td>
+            <td><span class="no">✗ Static file — no server-side logic possible</span></td>
+            <td><span class="yes">✓ FastAPI backend — anything is buildable</span></td>
+          </tr>
+          <tr>
+            <td>Server cost</td>
+            <td><span class="yes">✓ Free</span></td>
+            <td><span class="part">~$6–12/mo shared server (already running for other apps)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── What the upgrade unlocks ── -->
+  <section class="section">
+    <div class="upgrade-box">
+      <h2>What the Hosted Version Unlocks</h2>
+      <ul class="upgrade-list">
+        <li><span class="bullet">→</span><span><strong>Instant refresh:</strong> Staff clicks a button, menu updates in ~30 seconds. No GitHub account needed, no waiting on a runner queue.</span></li>
+        <li><span class="bullet">→</span><span><strong>Exact schedule timing:</strong> Scrape fires at 7 AM, 11 AM, 3 PM, 6 PM, 8 PM CST on the dot. No queue delay, no GitHub runner congestion.</span></li>
+        <li><span class="bullet">→</span><span><strong>Staff schedule tab:</strong> PIN-protected shift schedule viewer built into the same page — no separate app needed.</span></li>
+        <li><span class="bullet">→</span><span><strong>Custom domain + SSL:</strong> e.g. <code>menu.dinkydope.com</code> or <code>staff.mnlegalcannabis.com</code> — full HTTPS, professional URL.</span></li>
+        <li><span class="bullet">→</span><span><strong>Access control:</strong> Full-page PIN protection if you don't want inventory publicly viewable by competitors.</span></li>
+        <li><span class="bullet">→</span><span><strong>Foundation for anything next:</strong> Customer-facing menu page, loyalty integration, low-stock alerts, SMS notifications — all require a real server. The free version has a hard ceiling here.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Future feature ideas ── -->
+  <section class="section">
+    <div class="section-title">Potential Future Features (Hosted Only)</div>
+    <p style="font-size:.86rem;color:#555;margin-bottom:18px">These require a real server — none are possible on the free GitHub Pages version. Listed from most practical to most ambitious.</p>
+    <div class="future-grid">
+      <div class="future-card">
+        <div class="badge-phase phase-now">Quick win</div>
+        <div class="future-card-name">Custom Domain + SSL</div>
+        <div class="future-card-desc">menu.dinkydope.com with HTTPS. Clean, professional, shareable with customers.</div>
+      </div>
+      <div class="future-card">
+        <div class="badge-phase phase-now">Quick win</div>
+        <div class="future-card-name">Staff Schedule Tab</div>
+        <div class="future-card-desc">PIN-protected weekly schedule built into the menu page — already prototyped in the private version.</div>
+      </div>
+      <div class="future-card">
+        <div class="badge-phase phase-next">Phase 2</div>
+        <div class="future-card-name">Customer-Facing Menu</div>
+        <div class="future-card-desc">A separate route that shows a public-safe version of the menu — no THC percentages if required by state law, branded for the store.</div>
+      </div>
+      <div class="future-card">
+        <div class="badge-phase phase-next">Phase 2</div>
+        <div class="future-card-name">Low-Stock Alerts</div>
+        <div class="future-card-desc">Auto-notify the buyer when a category drops below X products in stock — triggered by the scraper, no manual monitoring needed.</div>
+      </div>
+      <div class="future-card">
+        <div class="badge-phase phase-next">Phase 2</div>
+        <div class="future-card-name">Product Card Descriptions</div>
+        <div class="future-card-desc">Short staff-friendly "quick sell" summary on each card — one sentence that's easy to say out loud to a customer.</div>
+      </div>
+      <div class="future-card">
+        <div class="badge-phase phase-later">Future</div>
+        <div class="future-card-name">Budtender Training Module</div>
+        <div class="future-card-desc">Embedded terpene education, strain quizzes, and customer conversation guides — built into the same tool staff already use.</div>
+      </div>
+      <div class="future-card">
+        <div class="badge-phase phase-later">Future</div>
+        <div class="future-card-name">Multi-Location Support</div>
+        <div class="future-card-desc">Same system, same branding, same AI scoring — separate data feeds for each store. Unified dashboard for the owner.</div>
+      </div>
+      <div class="future-card">
+        <div class="badge-phase phase-later">Future</div>
+        <div class="future-card-name">SMS / Email Alerts</div>
+        <div class="future-card-desc">Owner or buyer gets a daily digest: what's new, what sold out, what's low. Requires server + Twilio or similar.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COA note ── -->
+  <section class="section">
+    <div class="section-title">One Thing That Requires an Operational Change</div>
+    <div class="bottom-note">
+      <p><strong>The mood scores are only as accurate as the terpene data entered into Sweed.</strong></p>
+      <p style="margin-top: 8px">This is not a software limitation — it's a process one. When a new product arrives, staff should open the COA PDF from the brand and enter the terpenes in Sweed in the exact order listed on the lab report (order matters — position #1 is weighted most heavily in the scoring formula).</p>
+      <p style="margin-top: 8px">If terpenes are left blank, the app falls back to general strain knowledge — which is a reasonable approximation but not batch-specific. If they're copied from a brand's website instead of the actual COA, scores reflect marketing claims, not the real product.</p>
+      <p style="margin-top: 8px; color: #16a34a; font-weight: 600;">Recommendation: Make accurate COA entry a product intake requirement. The mood filter is the differentiator vs. every other cannabis menu tool — it's only as powerful as the data behind it.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer style="text-align:center;padding:20px;font-size:.75rem;color:#888;border-top:1px solid #e5e7eb;background:white">
+  Prepared by Jose · Dinky Dope &amp; MN Legit Cannabis Menu Tool · June 2026
+</footer>
+
+</body>
+</html>
