@@ -26,6 +26,22 @@ Embedding a PAT in a remote URL puts the credential in plaintext in `.git/config
 - Classic PATs give no way to introspect their own name/ID from the token itself via API — you can only tell it's "the right one" by testing whether it still authenticates, not by matching it to a row in the GitHub UI.
 - `git remote -v` prints credentials in plaintext if they're embedded in the URL — worth grep-checking all repos on a server for this pattern (`grep -r 'ghp_' /opt/*/.git/config /root/*/.git/config`) rather than assuming it's isolated to one repo.
 
+## Follow-up incident: over-deletion during PAT cleanup
+
+While deleting classic PATs on the GitHub web UI ("delete all but one"), the user also removed the **SSH key** registered to this server and revoked the **`gh` CLI's own token** — both unrelated to the leaked PAT, but living on the same settings pages. Result: `git push` started failing with `Permission denied (publickey)` and `gh auth status` reported an invalid token. No data was lost (the pending commit just sat locally, unpushed), but it's a good example of how "delete everything I don't recognize" on a credentials page can take out working, legitimate credentials alongside the bad one.
+
+**Recovery:**
+1. Confirmed the local keypair (`~/.ssh/github`) was still intact — the problem was GitHub no longer trusting it, not a broken/missing key.
+2. Re-added the existing public key to GitHub (Settings → SSH and GPG keys → New SSH key) — no new keypair needed.
+3. Re-ran `gh auth login -h github.com -p ssh -w` (device flow) to get `gh` CLI logged back in.
+4. Verified with `ssh -T git@github.com` and `gh auth status`.
+5. `git push` on server-runbook initially rejected as non-fast-forward (remote had moved since the last fetch, unrelated commits from another session) — resolved with `git pull --rebase` then push.
+
+**Bonus outcome:** the `gh` CLI re-authenticated with a much narrower token scope (`gist`, `read:org`, `repo`) than its previous token (`admin:org`, `admin:enterprise`, `delete_repo`, etc.) — this incidentally resolved the over-broad-scope concern noted below, without a deliberate rescoping effort.
+
+## What I learned (cont.)
+- GitHub's "SSH and GPG keys" and "Personal access tokens" pages are separate, but easy to conflate when cleaning up credentials in the same sitting — deleting "everything except the one I need" on one page can silently include an entry that's actually load-bearing (SSH key, or the CLI tool's own token).
+- `gh auth login -p ssh -w` re-triggers the device-code flow and lets you pick which local SSH key to associate — useful when `gh`'s stored token itself gets invalidated.
+
 ## Follow-up
-- The `gh` CLI on this server is authenticated with a *separate* token that has near-full account scope (`admin:org`, `admin:enterprise`, `delete_repo`, etc.) — far broader than needed for git operations. Not addressed in this session; worth revisiting to scope it down or replace with a narrower token.
 - Consider using per-repo GitHub deploy keys instead of one account-wide SSH key, so a compromise of one repo's key doesn't imply access to the others.
