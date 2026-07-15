@@ -29,11 +29,22 @@ Same codebase lineage, same bug: this repo's `product_key()` already included `c
 
 One repo-specific note: because `category` was already part of the *old* key here, the `elif category changed` branch in `merge()` was dead code (a category change always produced a different old-style key, so it was always caught by the `NEW` branch first, never reaching the `elif`). Switching to a pure id-based key makes that branch live again — it will now correctly fire if Sweed ever reclassifies a product's category while keeping the same id. Kept it rather than removing it as "dead code."
 
+### Mirror-image bug: false "Sold Out" from orphaned pre-rename entries
+
+After the key migration, each renamed product's *pre-rename* legacy entry (a different name text = a different old-style key, never touched by the migration bridge since that only matches on the *current* name) was left behind in `products.json`, still `in_stock: false` with a recent `last_seen` from right before the rename. `build_preview.py`'s Sold Out section (`SOLD_DAYS = 2`, same style of `last_seen`-age filter as the New section) picked these up and showed them as "Gone" even though the product never left — it was renamed and is still on the menu under its new id-keyed entry.
+
+Confirmed live on both repos and deleted the specific orphans (verified by name-prefix + brand + category match, not a blanket sweep):
+- south-metro: `PR Bumper OG`, `PR Frodo Squeeze`, `PR Fog Dog`, `PR Gummi Bears`, `PR Medusa 2pk`, `PR Glue 31 - 1gr`, `PR Blueberry Muffin Mini Pre-rolls`
+- dinky-dope-menu: `PR Fog Dog`, `PR Gummi Bears`, `PR Frodo Squeeze`
+
+Their `first_seen` had already been extracted and applied to the new entries during the earlier backdate, so nothing was lost by removing them. Genuinely sold-out unrelated products (e.g. a flower-category `Glue 31` at south-metro, `Super Lemon Haze`/`Sour Apple` vapes at dinky-dope-menu) were left untouched.
+
 ## What I learned
 
 - A hash of user-facing text is not a stable identity key — any field a POS/CMS can freely edit will eventually break it. Prefer the source system's own primary key when one exists, even if it means auditing the raw payload for it.
 - Changing a key scheme is never local to one file — grep for every other place that keys off the same scheme before deploying. Here it was `strains_enriched.json`; on a bigger system it could be several.
 - `gh run watch` blocks past ~2 min; for anything that might run long (API-cost steps especially), poll step-by-step status in the background so a runaway step can be caught and cancelled before it commits.
+- A key-scheme migration that only bridges *forward* (old key → new key when the fresh item matches) leaves the *old* identity's dead history sitting in the data store. Any other feature keyed off recency of that same store (here: a "sold out" section keyed off `last_seen`) can independently misfire on that leftover record. When migrating identity, check every recency/age-based view of the data, not just the one that motivated the fix.
 
 ## Follow-up
 
