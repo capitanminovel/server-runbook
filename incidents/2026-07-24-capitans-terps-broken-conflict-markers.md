@@ -49,3 +49,12 @@ git at all**, so the repo alone couldn't have rebuilt the running app.
 
 ## Follow-up
 None outstanding. Repo now matches what's running.
+
+## Branch cleanup (same session)
+While in the repo, checked all remote branches via `gh pr list --state all`
+(not just `git merge-base`, since squash/direct-push merges don't show as
+ancestors) and deleted 3 that were fully merged or superseded:
+`claude/practical-gates-mQRh5`, `claude/captains-terps-grows-MA4Ta`,
+`claude/strain-page-updates-1mdfj7`. Left `brandon-grow-log` alone — it has
+unique unmerged content (a separate "Brandon's Grow Log" indigo-themed page,
+17 Pigtail Gardens strains) with no PR ever opened for it.
