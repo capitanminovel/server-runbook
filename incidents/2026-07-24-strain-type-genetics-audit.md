@@ -98,6 +98,59 @@ Patched both sentences directly in the DB with verified facts rather than
 regenerating (regenerating risked introducing a *new* unverified guess in
 place of a verified one).
 
+## Addendum 2: deeper sub-lineage audit reversed one of the type fixes
+Went back and verified every remaining unverified boutique parent name
+(Why U Gelly, Double Tap, Miami Madness, Chili Verde, Kush Mountains,
+Dulce De Uva, Starburst F2, Gelly Rancher) against real strain data. Found:
+
+- **mind-flayer-s1**: the research text claimed Why U Gelly = "Gelly Rancher
+  x Permanent Marker" and Double Tap = "a potent OG-forward hybrid." Real
+  data: Why U Gelly is Gelato #33 x The Don Mega (breeder-stated ~50/50
+  balanced); Double Tap is Gorilla Glue #4 x Black Banana and is explicitly
+  documented as **sativa-dominant**. Neither Permanent Marker nor Gelly
+  Rancher nor "OG" genetics are actually in this strain's lineage at all —
+  fully fabricated names, not just a misweighted narrative like the earlier
+  Krux #16 case. This reverses the Addendum-1 type call: mind-flayer-s1 was
+  bumped Hybrid → Indica Leaning Hybrid based on the fabricated Permanent
+  Marker claim; with real data (Double Tap sativa-dominant, Why U Gelly
+  balanced) it's corrected to **Sativa Leaning Hybrid**. Both the
+  `genetics_lineage` and `effects` text were patched to remove the
+  fabricated ancestry names and the now-unsupported causal claim that "OG
+  and Double Tap genetics" drive a body-heavy second-hour effect.
+- **grape-nebula**: Dulce De Uva's research text claimed "Grape Pie and
+  Dosidos heritage." Real data: Dulce De Uva is Grape Pie x **OG Kush**.
+  Dosidos isn't part of it. Doesn't change the overall indica lean (OG Kush
+  and Dosidos are both similarly indica-dominant) but is still a fabricated
+  fact, corrected in the text.
+- **spicy-guava**: Chili Verde confirmed indica-leaning (~70/30) in addition
+  to RS11 (indica-dominant per Addendum 1). Both parents now confirmed
+  indica-leaning — corrected from Hybrid to **Indica Leaning Hybrid**.
+- Kush Mountains and Miami Madness both checked out consistent with the
+  existing the-krux-16 and strawn-johnson classifications — no change.
+- Starburst F2 (grape-nebula's other parent) has genuinely disputed real-world
+  genetics depending on breeder, same situation as RS11 — left as-is,
+  flagged as uncertain rather than force a correction on ambiguous data.
+
+## What I learned (round 2)
+- The Grape Nebula bug was "no grounding data → outright hallucination."
+  This round found a *different* failure mode on the same feature: even
+  when top-level lineage grounding exists, the model still fabricates
+  specific, wrong sub-parent names one level down (Why U Gelly's actual
+  parents) with the same confident, detailed tone as verified facts — it
+  isn't just weak on ungrounded strains, it fills in unverified detail on
+  strains it does have partial grounding for, too.
+- A "correction" applied without checking the ancestor's own real genetics
+  can itself be wrong (mind-flayer-s1 was reclassified once already, in the
+  wrong direction, before this deeper check). When the reclassification was
+  based on the AI's own generated lineage text rather than externally
+  verified data, treat it as still provisional.
+- Worth checking every named sub-parent in a generated lineage against real
+  strain data individually, not just the ones that "feel off" — Double Tap's
+  fabricated genetics didn't read as suspicious in isolation, it was only
+  caught by looking it up directly.
+
 ## Follow-up
-None — all 10 strains now reflect pedigree-based type classification, and
-the two confirmed sub-lineage text errors are corrected.
+None — all 10 strains now reflect a verified-genetics-based type
+classification, and all confirmed sub-lineage/effects text errors found so
+far are corrected. See [[practice-verify-ai-strain-genetics]] for the
+standing verification practice this established going forward.
