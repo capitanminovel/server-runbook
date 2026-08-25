@@ -85,9 +85,31 @@ generated. One test strain (Wedding Cake, supplier "Northstar Grow Co") now exis
 dev database as a result of this testing — left in place as a working demo example rather than
 cleaned up.
 
+## Follow-up (added later same session)
+
+**Real COA terpene percentages, not just names.** The user asked directly: does this handle
+"full lab data" better than legit-buddy-api could? Answer at the time was no — dispo_menu's
+`terpenes` field mirrored legit-buddy-api's names-only limitation. But that limitation exists
+there because it's an automated Sweed scraper stuck with whatever Sweed's API returns
+(presence/absence only). dispo_menu's Strain Generator is a *manual* admin entry form — when an
+admin has a real COA in hand, there's no reason not to capture the actual lab percentage per
+terpene. Changed `terpenes` to always store `[{name, percentage}]`, percentage null only when
+it's an AI estimate (no COA available) rather than a real lab value — one uniform shape
+regardless of source, so nothing downstream needs to branch on `coa_tested` just to read this
+field. The generation prompt now explicitly weights per-terpene percentage and total terpene %
+as real signal. Verified live: a real strain (Gelato) generated with real percentages produced a
+description that explicitly referenced the actual lab values ("caryophyllene-forward," "1.9%
+total terpene load") — confirming the model is genuinely using the data, not just ignoring it.
+
+**Dashboard tile icon.** Added a user-provided generated image (cannabis leaf + gears, teal-to-
+purple gradient) as the Strain List / Generator tile's icon. Resized from 1024x1024 down to
+128x128 with Pillow (installed in a throwaway venv just for this, not added to the app's own
+requirements) before adding to `apps/admin/src/assets/`.
+
 ## Follow-up
 
 - [ ] Cautions phrase list needs actual legal/compliance review, not just Claude's first draft
 - [ ] `PUT /api/strains/{id}` (edit) and `POST /api/strains/{id}/redo` are still stubs
 - [ ] No supplier management UI beyond inline creation in the Strain Generator form
 - [ ] Sync-from-Sweed still not built — "Generate Strain Profile" is the only strain-creation path right now
+- [ ] Only the Strain List / Generator tile has an icon — the other 4 dashboard tiles don't yet
