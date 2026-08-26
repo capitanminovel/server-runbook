@@ -41,10 +41,13 @@ Also manually backdated the two already-affected live records in `docs/products.
 
 Commit: `9c786d5`.
 
+**Backfill was incomplete on the first pass.** Only backdated the 2 products the user had personally spotted (Runtz, Lit OG) — assumed that covered it. User immediately caught 3 more from real-world knowledge of the shelf ("Permanent Marker is another and there is two others"). Went back and ran the restock-transition scan across the *full* commit history (back to 2026-05-15, not just the last few days) instead of relying on a spot check, and found 3 more products that had restocked in the exact same batch as Runtz/Lit OG but were still carrying stale `first_seen`: **Fight Club** (33.5-day gap), **MAC Stomper** (10.1-day gap), **Permanent Marker** (18.9-day gap) — all backdated to the fix time (commit `a86b09a`). Also found and backdated 3 more from *older* restocks that were still live but never corrected: Soap, PR Medusa 2pk, Illemonati — backdated to their actual historical restock timestamps, not today, since those aren't fresh anymore. New Arrivals count went from 3 to 6.
+
 ## What I learned
 
 - "First time ever seen" and "recently became available" are different concepts and this codebase only tracked the former — worth checking any other place age-based state (`first_seen`/`last_seen`) drives a UI filter for the same kind of gap.
 - Don't trust a single git snapshot when auditing time-based logic — walking the actual commit history was what surfaced the real restock timeline; a snapshot alone said "nothing's new," which was wrong.
+- When backfilling data corrupted by a just-fixed bug, don't stop at the specific examples someone happened to mention — that's evidence the bug is live, not a bound on its blast radius. Should have run the full historical scan the first time instead of only patching the 2 named products and waiting to be told about the rest.
 
 ## Follow-up
 
