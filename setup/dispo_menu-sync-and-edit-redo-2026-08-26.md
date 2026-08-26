@@ -94,6 +94,19 @@ identified that a strain generated manually earlier this session ("Gelato") was 
 as the real live "Gelato 45" product, confirmed via `confirm-match`, and a second sync run
 recognized everything as already-linked with zero new flags — confirms idempotency.
 
+## Credentials simplified (same day, user request)
+
+Both dev-preview passwords were originally random-generated (20/16 char) and hard to type
+repeatedly during a demo. Swapped for memorable-but-still-reasonable values, kept different from
+each other so a leak of one doesn't expose both layers:
+- Basic Auth (`dispo`): `LegitDemo2026!`
+- App login (`admin@dispo-menu.dev`): `GreenLeaf2026!`
+
+Acceptable tradeoff for a dev/demo environment with no real customer data, especially with
+rate limiting already in place on both the Basic Auth-protected origin and `/api/auth/login`
+(see `dispo_menu-session-secret-and-rate-limiting-2026-08-25.md`). Revisit before any real
+customer data ever touches this environment.
+
 ## Follow-up
 
 - [ ] Today's testing added artifact strains (e.g. "Edit Test Strain") to the shared dev database
