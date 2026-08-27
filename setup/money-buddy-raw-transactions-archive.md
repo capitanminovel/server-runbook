@@ -54,13 +54,22 @@ c=SheetsClient()
 print(len(c.sheet.values().get(spreadsheetId=c.sheet_id, range=f\"'{RAW_TAB}'!A:A\").execute().get('values',[])), 'rows')"
 ```
 
+## Backfill (done 2026-08-27)
+- Full history uploaded as `Chase8827_Activity_20260827 (1).csv` (477 data rows,
+  05/12 → 08/25/2026). Response: `imported 11, 11 payments skipped, 455 dupes`.
+- `raw_transactions` now holds all 477 rows — complete reference.
+- The 11 "imported" rows were genuine pre–Money Buddy transactions (05/12–05/18,
+  before the app's first import). Per user request they were **deleted from
+  Sheet1** (script: scratchpad `remove_new.py` — deletes rows whose
+  transaction_id is absent from `Sheet1_backup_2026-08-27`, aborts if any target
+  is tagged/settled). Sheet1 back to 452 rows, identical to the backup.
+- 455/466 non-payment rows deduped cleanly → the export's date/amount formatting
+  matches stored data; dedup is reliable for this source.
+
 ## Follow-up
-- User to re-upload the full transaction history (start → today) through the site
-  so `raw_transactions` gets a complete backfill in one pass.
-- After that upload: check the `imported` count in the response. If it's large,
-  the full-history file's date/amount formatting differs from earlier imports and
-  Sheet1 picked up duplicate untagged rows — restore Sheet1 from
-  `Sheet1_backup_2026-08-27` (the archive tab keeps the full history regardless).
+- 69 untagged Aug 9–25 transactions still sit in Sheet1 awaiting T/B/J tags.
+- `Sheet1_backup_2026-08-27` retained as a safety net; safe to delete later.
 - Still open: the ~$1,000 / $4,584.71 reconciliation (candidate: `CL *Chase Travel`
   -$1,118.40, tagged B, settled 2026-08-12 01:49).
-- Not yet pushed — `git push` from `/opt/money_buddy` when ready.
+- App code committed locally (`fd64f9f`) but **not pushed** — `git push` from
+  `/opt/money_buddy` when ready.
