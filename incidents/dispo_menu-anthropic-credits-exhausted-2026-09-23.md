@@ -35,3 +35,14 @@ readable messages (503 "out of credits", 502 otherwise) instead of a raw 500. Ve
       route's nginx timeout was raised to 240s; if real runs are still slower than that, cut the
       budget or move to a background job with polling instead of one long request.
 - [ ] Consider a separate key for dispo_menu and a spend alert on the account.
+
+## Update (same day): credits restored, cost cut
+Credits re-added; live Cherry Lady Slipper generation verified against the real Trailhead pages (a first
+run stated an inference as fact — "name is a nod to MN's state flower" — so `interesting_facts` was
+tightened to facts a page states directly). Each Opus 5 generation with search + full page reads costs
+roughly $0.50–1+, which the user objected to. Changes: the Strain Generator model is now
+`STRAIN_GENERATOR_MODEL` in `apps/api/.env` (default `claude-sonnet-5`; set `claude-opus-5` and restart
+`dispo-menu-api` to switch back) and `web_fetch` is capped at 8000 tokens per page. Per-generation token
+usage + model are logged: `journalctl -u dispo-menu-api | grep "strain generation"`.
+- [ ] Not yet re-tested on Sonnet 5 — check the first real run's token log and that facts still ground.
+- [ ] Option not built: split "Generate" (cheap, model knowledge only) from an on-demand "Research sources" button.
