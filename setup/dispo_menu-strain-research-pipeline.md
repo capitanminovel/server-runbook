@@ -165,3 +165,17 @@ real browser session (same mechanism as `GetProductList`):
   terpene tag names (presence only, no terpene effects). Saved as `terpenes` with `terpene_batch = "Sweed lab
   data"`; the terpene guide is attached whenever (1) or (2) exists. Vapes/concentrates keep tag names (a cart's
   terpene profile is the product's, not the strain's).
+
+### Rule change (user, 2026-09-24): percentages ONLY from Sweed lab data
+"COA terpenes only if in Sweed lab data since we never know what batch" — a supplier COA page lists several
+batches and nothing says which one is on the shelf, so its **percentages are never used**. Sweed's extended lab
+data belongs to the listed product, so:
+- `terpenes` with percentages, `coa_tested`, `terpene_batch = "Sweed lab data"` and `terpene_effects` come only from
+  Sweed's lab data (flower). Set by code; the model is told to return `lab_terpenes` empty and any value it sends is
+  discarded. Replaces the earlier model-copies-from-COA-page path and its name+number verifier.
+- The supplier COA page is still fetched, as a **reference for common terpenes**: `estimated_terpenes` = names that
+  recur across its batches, else Sweed's tags, else research-page names; names only, each must appear in the
+  material given (checked in code, so a name from memory is dropped). Its batch facts may still appear in Misc.
+- Terpene guide (~18k tokens) is attached only when Sweed lab data exists, so most runs no longer pay the ~11¢
+  cache write: a strain with no Sweed lab data costs roughly 3-6¢, one with it ~17¢ cold / ~6.5¢ warm.
+- Card label: "Terpenes (lab)" when lab-measured, "Terpenes (common)" otherwise.
