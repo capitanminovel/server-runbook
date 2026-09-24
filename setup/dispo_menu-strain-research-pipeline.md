@@ -197,3 +197,13 @@ data belongs to the listed product, so:
   The listing's THC/CBD/total-terpene values are no longer given to the model at all.
 - MAC Stomper (Sweed flower + pre-roll, lab data) read only AllBud as a *page*: Leafwell / Cannaconnection / Cannabis.net
   carry no MAC Stomper page (checked their sitemaps).
+
+## Batch tab (2026-09-24)
+Strain Generator -> **Batch (up to 4)**: rows of strain name / brand / product type, run **one at a time from the browser**
+through the same `POST /api/strains/` the single form uses (no new backend). Sequential on purpose: keeps the terpene guide
+in Anthropic's 5-minute prompt cache (back-to-back runs ~6.5c vs ~17c cold) and avoids piling up headless-Chromium Sweed
+lookups (server cap: 2 at once). ~40s per strain; the estimate shown is 5c-8c each plus at most one ~11c cache write.
+Limits: the tab must stay open (a leave-page warning shows while running; a finished strain is already saved, the rest of the
+queue is lost); an out-of-credits error (503) skips the remaining rows. Upgrade path if batches grow: a server-side job
+(table + worker + status route) so the page can be closed. Also possible: fetch the Sweed catalog once per batch and match
+names locally (saves ~13s per strain).
