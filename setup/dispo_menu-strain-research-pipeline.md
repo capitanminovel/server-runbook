@@ -133,9 +133,15 @@ Note the prompt cache (5-minute TTL) had expired on every run, so each run paid 
   `DELETE /api/strains/{id}/sweed-links/{link_id}`; list/detail responses carry `sweed_links`.
 
 ### Live-menu contents change (seen 2026-09-24)
-Sweed only lists what is on the menu *right now*. The same store returned ~143 products earlier in the day and 43
-later (carts: 0). A strain that matched a Tasty Gems cart in three earlier runs came back "no vapes product with
-this name on the live Sweed menu" — a correct answer, not an error (`Products/GetProductList` returned HTTP 200
-with an empty list; checked per category). Consequences: (1) a strain not on the menu gets no Sweed data and, if its
-name is misspelled, no store-spelling/alias retry either; (2) generation still works, just sparse (measured
-2.9¢: 4.7k in / 217 out, nothing read); (3) link a strain to the live menu while its product is listed.
+Sweed's public storefront API (`Products/GetProductList`) returns only products that are available right now.
+A Tasty Gems Maui Wowie cart matched in three runs that afternoon, then disappeared: not in any of the store's 8
+categories (accessories, carts, concentrates, edibles, flower, hemp-derived THC, pre-rolls, wellness), not via a
+brand search, and none of the stock-style request options tried (`stockType`, `includeOutOfStock`, ...) changed
+the result. All 33 flower variants returned were "Available" with qty > 0; nothing inactive is ever returned.
+(The store also listed ~143 flower/pre-roll/edible/cart products on Aug 26 vs ~43 now — a month apart, not hours.)
+A sold-out product being "in the API but not active" would need a fuller Sweed API (back-office/integration key);
+we have none (`SWEED_API_KEY` in .env.example is empty). Consequences: (1) a sold-out strain gets no Sweed data
+(and a misspelled name gets no store-spelling/alias retry); generation still works, sparse — measured 2.9¢,
+4.7k in / 217 out, nothing read; (2) links persist (the Sweed id is stored), only *finding* a match needs the
+product listed; (3) link a strain while its product is on the menu; (4) idea: snapshot the Sweed listing when a
+link is made so its description/terpene tags survive a sell-out.
