@@ -42,13 +42,17 @@ Sweed's terpene *tag list* is names-only and ranks below a lab COA.
 - `lineage` uses the source's own wording even when no cross is stated ("Trailhead cultivation
   selection"); null only if the material says nothing about origin.
 
-## Cost (measured, Cherry Lady Slipper, Opus 5; $ = my estimate from token counts)
-| Run | Tokens | ≈ Cost |
+## Cost (measured from logged tokens; Opus 5 = $5 in / $25 out per MTok, cache write 1.25x, read ~0.1x)
+| Run | Tokens | Cost |
 |---|---|---|
-| Old search loop (Sonnet) | 354k in / 6.5k out | ~$1.15 |
-| Standard, no guide | 4.7k in / 1.7k out | ~5–6¢ |
-| Standard + guide, first run | 2.3–2.8k in + 17.7–18.2k cache-write / 1.5–1.8k out | ~14¢ (two runs) |
-| Standard + guide, cache hit (within 5 min) | ~same, cache read | ~5–6¢ |
+| Old search loop (Sonnet 5, $2/$10) | 354k in / 6.5k out | ~77¢ (earlier "$1.15" used wrong rates; the >$1 runs were Opus) |
+| Standard, no terpene guide | 4.7k in / 1.7k out | ~6.6¢ |
+| Standard + guide, **cold cache** | ~2.8k in + 18.2k cache-write / ~1.7k out | **~17¢** |
+| Standard + guide, **warm cache** (previous run <5 min ago) | ~2.8k in + 18.2k cache-read / ~1.7k out | **~6.5¢** |
+The terpene guide (~18k tokens) is a cached system block, so the first strain in a burst pays ~17¢ and each
+further strain started within 5 minutes pays ~6.5¢ (10 strains ≈ 76¢). The cache refreshes on every read.
+Gaps of 5–60 min re-pay the write; a 1-hour TTL (2x write) would only pay off with 3+ requests per hour.
+Earlier estimates in this doc/commits (~14¢, ~5–6¢) used assumed rates and were slightly low.
 Deep-search tiers (~30¢ low, ~60–70¢ high) are planned; caps to be set from logged usage.
 
 ## Reference sites (Sources tab) — checked with the free "Check this site" button
