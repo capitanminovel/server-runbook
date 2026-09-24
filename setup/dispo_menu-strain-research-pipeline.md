@@ -114,3 +114,20 @@ Note the prompt cache (5-minute TTL) had expired on every run, so each run paid 
   (`/coa’s`, punctuation now handled) — PDFs are not read. Leafly removed from Sources (blocked every run).
 - Sources tab now: allbud.com, leafwell.com, cannaconnection.com, cannabis.net.
 - Log now shows `est_cost` per generation and `research ... took Ns`; cost by `journalctl -u dispo-menu-api | grep "strain generation"`.
+
+## Linking a strain to live-menu (Sweed) products (2026-09-24)
+- **One explicit click per link** (docs rule: never silent auto-link). After a generation the result lists every
+  live-menu product matching the strain's name and type (best first; supplier brand ranked first) with **Link**
+  and **Link all**; the strain card has "Link to live menu" for older strains (~15s lookup).
+- **Many per strain:** table `strain_sweed_links` (strain_id, sweed_product_id, name, brand, category).
+  Flower and pre-roll are one product type but can be two products (e.g. MAC Stomper flower $85 + PR MAC Stomper
+  pre-roll $18); sizes are separate ids too. A product can belong to only one strain (409 otherwise).
+- **Server verifies:** the browser sends only product ids; the API accepts an id only if the live menu really
+  returned it for this strain (cached 30 min per strain, else re-looked-up) and copies name/brand/category from
+  Sweed, not from the request. Tenant scoping as everywhere else. At most 2 headless-Chromium lookups at once.
+- `strains.sweed_product_id` stays as the "primary" link (first made; moves to the next on unlink) because the
+  sync reads it; `run_sync` now also treats every link as linked (no stub re-created for a second product) and
+  marks a strain nonactive only when none of its products remain. (Sync is greyed out in the UI; that path is
+  code-read but not yet exercised.)
+- Endpoints: `GET /api/strains/{id}/sweed-candidates`, `POST /api/strains/{id}/sweed-links`,
+  `DELETE /api/strains/{id}/sweed-links/{link_id}`; list/detail responses carry `sweed_links`.
