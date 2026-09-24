@@ -238,3 +238,13 @@ User's manual test of Dulce de Fresa (Marawanna concentrate): terpene tags only,
   detail beyond the cross, name, type, effects, flavors, appearance, numbers). If false the Misc is dropped, which
   triggers the ~4c web-search pass; if that verifies nothing, Misc stays blank.
 - Research sites now: allbud, leafwell, cannaconnection, cannabis.net, strainpedia, seedsherenow.
+
+### More research sites for niche strains (user-supplied, 2026-09-24)
+For Dulce de Fresa the user found: growdiaries.com (**HTTP 403 — bot-blocked, not usable, not bypassed**),
+jointcommerce.com (blog post with an "Origins and History" section — a good Misc source, but a marketing blog, so
+lower reliability; the grounding rules still require facts a page states directly), kalikori.me (a grower's page,
+541 chars: genetics Dulce de Uva x Strawberry Guava, "retired"). Blog titles don't match our page-name rule, so
+matching now also accepts `<strain>-(strain|cannabis|weed|marijuana|cultivar|review|guide|info)...` page names
+(tested: `blue-dream-haze-strain-...` is NOT taken for Blue Dream). Both sites added to Sources; Dulce de Fresa now
+reads AllBud + JointCommerce + Kalikori (3 pages). Research sites: allbud, leafwell, cannaconnection, cannabis.net,
+strainpedia, seedsherenow, jointcommerce, kalikori.
