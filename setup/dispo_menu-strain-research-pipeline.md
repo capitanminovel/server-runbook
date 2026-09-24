@@ -96,3 +96,21 @@ acceptable. Prompt is back to the run-#4 state (terpene effects traceable to the
 Reported Uses = conditions/goals from the material). Legal review of the disclaimer/Cautions still pending.
 Note the prompt cache (5-minute TTL) had expired on every run, so each run paid the ~18k-token guide write
 (~14¢); back-to-back runs would be ~5-6¢.
+
+## 2026-09-24 additions: product type, aliases, guide gating (measured: "MUAI WOWIE", Vapes, Tasty Gems)
+- **Product type** (Flower / Pre-rolls, Vapes, Concentrates) is picked on the generate form, saved on the strain
+  (`strains.product_type`), shown on the card, and filterable on the list. The Sweed lookup searches flower,
+  pre-roll, vapes ("carts", id 5684) and concentrates (id 5251, lookup only — NOT added to the sync) and only
+  uses a match of the chosen type; a same-name product in another type is reported "wrong type — not used".
+  Supplier brand breaks ties. Sweed's category list: `Products/GetProductCategoryList`.
+- **Typos and aliases:** if Sweed matches the name with a typo ("MUAI WOWIE" -> "Maui Wowie") and/or its
+  description says "also known as ..." (AllBud lists it as "Maui Waui"), page lookups that missed are retried
+  under those names — research sites only, so it stays a few seconds. No AI cost.
+- **Terpene guide** (~18k tokens) is sent only when a supplier COA page was actually read. No COA -> no guide ->
+  no cold-cache write. Measured: 12k tokens in / 636 out = **7.6¢** (3 sites read; guide skipped).
+- **Vape/concentrate potency** (THC 80%+) is not shown to the model — it kept landing in Misc as if it were a
+  strain fact.
+- **Tasty Gems** publishes no per-strain pages (sitemap = 8 general pages) and its COAs are PDF downloads
+  (`/coa’s`, punctuation now handled) — PDFs are not read. Leafly removed from Sources (blocked every run).
+- Sources tab now: allbud.com, leafwell.com, cannaconnection.com, cannabis.net.
+- Log now shows `est_cost` per generation and `research ... took Ns`; cost by `journalctl -u dispo-menu-api | grep "strain generation"`.
