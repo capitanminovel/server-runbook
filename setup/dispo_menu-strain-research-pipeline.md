@@ -145,3 +145,23 @@ we have none (`SWEED_API_KEY` in .env.example is empty). Consequences: (1) a sol
 4.7k in / 217 out, nothing read; (2) links persist (the Sweed id is stored), only *finding* a match needs the
 product listed; (3) link a strain while its product is on the menu; (4) idea: snapshot the Sweed listing when a
 link is made so its description/terpene tags survive a sell-out.
+
+## Sweed lab data endpoints (found by the user 2026-09-24, wired in the same day)
+Both POST to `https://shop.mnlegitcannabis.com/_api/Products/<name>` with header `storeid: 434`, from inside the
+real browser session (same mechanism as `GetProductList`):
+- **`GetExtendedLabdata`** `{"variantId": 593666}` -> per-terpene percentages (`terpenes.values[]` with
+  name/code/min/max, incl. a "Total Terpenes" row), Total THC / THCA, `fullLabDataUrl` (still null). **This is
+  the "full lab data" source.** Names use ASCII prefixes ("B-Caryophyllene") -> we write them "β-Caryophyllene".
+  Note it takes a **variant** id (one per size: 3.5g / 7g), not the product id our links store.
+- **`GetProductByVariantId`** `{"variantId":"593666","platformOs":"web","stockType":"Default"}` -> the full product
+  (description, strain flavors/terpenes/effects/scents, variants, `detailedLabDataExists`). The list call already
+  carries most of this. `stockType` other than "Default" (All / OutOfStock / Inactive) returns 400, so no way found
+  yet to fetch sold-out items — needs a sold-out product's variant id (the number ending its menu URL) to test.
+- **Coverage today (checked per product):** per-terpene % on 14 of 40 listed products (flower 11/25, pre-rolls
+  3/11, edibles 0/4). Cap Junky, Cherry Lady Slipper etc. answer with THC only. The list response does NOT carry
+  `detailedLabDataExists`, so you have to ask the lab endpoint per variant.
+- **Priority for lab terpenes (flower only):** (1) Sweed extended lab data — set by code straight from the
+  response, no AI copying; (2) supplier COA page (model copies, code verifies name+number adjacency); (3) Sweed
+  terpene tag names (presence only, no terpene effects). Saved as `terpenes` with `terpene_batch = "Sweed lab
+  data"`; the terpene guide is attached whenever (1) or (2) exists. Vapes/concentrates keep tag names (a cart's
+  terpene profile is the product's, not the strain's).
