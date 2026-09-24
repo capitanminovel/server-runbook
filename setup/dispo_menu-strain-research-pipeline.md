@@ -223,3 +223,18 @@ Sources; a row "Deep search (Misc)" shows in "What was researched" with the cost
   size, each linking to the live-menu page (`.../flower-5221/<variantId>?stockType=Default`; the variant id alone works).
 - Strain Sweed links now store sizes (`strain_sweed_links.variants`); the strain card's linked live menu is a dropdown,
   and the Strain List cards are collapsible (Expand all / Collapse all).
+
+## Concentrate test findings and fixes (2026-09-24, late)
+User's manual test of Dulce de Fresa (Marawanna concentrate): terpene tags only, boring Misc, 1 research page.
+- **Sweed lab data exists for concentrates** (all 3 Marawanna items: Dulce De Fresa has 12 terpenes with %, total 6.464%,
+  Total THC 64.4%). It had been limited to flower by an earlier decision; now used for **every product type**. Lab THC
+  is still not shown to the model. A concentrate with lab data attaches the terpene guide (~11c on a cold cache).
+  Sweed's own data has a typo ("Carophyllene Oxide"), normalised.
+- **"1 of 4 research pages"** = 4 sites tried, 1 had a page (AllBud). Niche strains have thin coverage; the richness of
+  Cherry Lady Slipper came from the BRAND's own site (Trailhead), which Marawanna doesn't have. Coverage test (free):
+  Strainpedia and SeedsHereNow carry MAC Stomper + Blue Dream (added to Sources); nothing new carried Dulce de Fresa;
+  Leafly/Weedmaps/most others give nothing or are blocked.
+- **Boring Misc:** the model must now also return `misc_is_real_fact` (true only for a story/origin/award/cultural/grow
+  detail beyond the cross, name, type, effects, flavors, appearance, numbers). If false the Misc is dropped, which
+  triggers the ~4c web-search pass; if that verifies nothing, Misc stays blank.
+- Research sites now: allbud, leafwell, cannaconnection, cannabis.net, strainpedia, seedsherenow.
