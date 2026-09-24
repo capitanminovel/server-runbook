@@ -179,3 +179,21 @@ data belongs to the listed product, so:
 - Terpene guide (~18k tokens) is attached only when Sweed lab data exists, so most runs no longer pay the ~11¢
   cache write: a strain with no Sweed lab data costs roughly 3-6¢, one with it ~17¢ cold / ~6.5¢ warm.
 - Card label: "Terpenes (lab)" when lab-measured, "Terpenes (common)" otherwise.
+
+## Brands, visible Sources, Misc (2026-09-24, later)
+- **"Supplier" is now "Brand" everywhere the admin sees it** (generate form, status rows "Brand page / Brand lab results",
+  card "Brand Description"). The DB/API names (`suppliers`, `supplier_id`, `supplier_description`) are unchanged.
+- **Brands list** = the cannabis brands on the live menu (flower / pre-roll / carts / concentrates). Websites saved
+  after checking each with our fetcher: Trailhead, Tasty Gems, Campfire Cannabis (lakeleafcultivation.com — no sitemap,
+  no strain pages), dizgo (dizgoco.com — has /strains/<name> pages), Unbound (enjoyunbound.com), Island Pezi, Lifted
+  North, Lakeside Canna (lakesidecannabisco.com), Avió (aviosupply.co, given by the user). Left blank: Marawanna
+  (marawanna.org is a dispensary/edibles site and broken), Redwood County Weed Co (nothing found), Northstar Grow Co.
+  Edit route added: `PATCH /api/suppliers/{id}`. Hemp/wellness/accessory/edible brands were deliberately not added.
+- **Sources now always show the inputs, not only pages read:** first `Brand: <name>` (linked if it has a website), then
+  `Live menu (Sweed): <product> — <brand>, <category> [· lab data]`, then the pages. `SourceRef.url` is optional.
+- **Misc (`interesting_facts`) must be a genuinely interesting fact** about the strain or the grow (origin/breeding story,
+  awards, cultural note, where/how grown); it is no longer a place for type, effects, appearance or THC/terpene numbers.
+  Null only when the material states none (grounding rule unchanged: an honest blank beats an invented fact).
+  The listing's THC/CBD/total-terpene values are no longer given to the model at all.
+- MAC Stomper (Sweed flower + pre-roll, lab data) read only AllBud as a *page*: Leafwell / Cannaconnection / Cannabis.net
+  carry no MAC Stomper page (checked their sitemaps).
