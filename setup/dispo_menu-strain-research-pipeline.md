@@ -207,3 +207,19 @@ Limits: the tab must stay open (a leave-page warning shows while running; a fini
 queue is lost); an out-of-credits error (503) skips the remaining rows. Upgrade path if batches grow: a server-side job
 (table + worker + status route) so the page can be closed. Also possible: fetch the Sweed catalog once per batch and match
 names locally (saves ~13s per strain).
+
+## Deep search for a blank Misc (2026-09-24)
+When the normal pass finds no interesting fact (`interesting_facts` null) the generator runs **one cheap web-search pass**
+(`app/ai/deep_misc.py`): Haiku 4.5 with `web_search_20250305`, max 2 searches, proposes up to 2 facts about the strain's
+story or grow, each with its source URL. **Nothing is kept on the model's word:** our own SSRF-guarded fetch reads each
+cited page and keeps a fact only if >=70% of its content words are on that page and the page mentions the strain
+(unit-tested: true fact passes; invented fact, wrong-strain page, too-short claim fail). Verified pages are added to
+Sources; a row "Deep search (Misc)" shows in "What was researched" with the cost. If nothing verifies, Misc stays blank.
+- **Measured (MAC Stomper):** Sonnet + 3-4 searches = 77k input tokens = **21c** (the search results are the cost) ->
+  Haiku + 2 searches = 18k in / 0.3k out = **4.0c**, 15s, 2 facts verified (breeder Capulator; extraction reputation).
+- Web search is billed per search (~1c, from Anthropic's list price of $10 per 1,000) on top of tokens.
+- Settings: `DEEP_MISC_ENABLED` (default true), `DEEP_MISC_MODEL` (default claude-haiku-4-5) in `.env`.
+- Sources order everywhere: Brand, pages read (incl. deep-search pages), then "Sweed - <name> (<size>)" last, one per
+  size, each linking to the live-menu page (`.../flower-5221/<variantId>?stockType=Default`; the variant id alone works).
+- Strain Sweed links now store sizes (`strain_sweed_links.variants`); the strain card's linked live menu is a dropdown,
+  and the Strain List cards are collapsible (Expand all / Collapse all).
