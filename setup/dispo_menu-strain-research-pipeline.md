@@ -83,11 +83,12 @@ page), `coa_tested` true, terpene effects Relaxed/Calm/Appetite-suppressing (eac
 lineage "Trailhead cultivation selection". Wrinkles: "Appetite-suppressing" is a literal reading of the
 guide's humulene note (odd for a menu); Reported Uses included goal-like phrases ("Inspiration/creativity").
 
-### Wording rules added 2026-09-24 (verified, Cherry Lady Slipper run #5, ~14¢)
-`terpene_effects` = plain felt sensations in menu-friendly words; health claims (anti-inflammatory,
-analgesic, anxiolytic) excluded; clinical guide wording softened ("appetite suppressant" → "Munchie-blunting");
-concentration thresholds respected (myrcene sedation needs ~>0.5%; this batch has 0.126%). `therapeutic`
-(Reported Uses) = conditions/wellness goals only; descriptions of the high go in `effects`. Result: terpene
-effects Relaxed / Munchie-blunting; Reported Uses Tension relief / Mood enhancement. Note the prompt cache
-(5-minute TTL) had expired on every run so far, so each run paid the ~18k-token guide write (~14¢); back-to-back
-runs would be ~5-6¢.
+### Wording rules tried and reverted 2026-09-24
+Tried: terpene effects as menu-friendly felt sensations only (no health claims; "Munchie-blunting" instead of
+"Appetite-suppressing") and Reported Uses limited to conditions/goals. It worked (~14¢ run) but was **reverted
+at the user's request**: the Strain List already carries a "for informational purposes only, not medical
+advice" disclaimer, so the guide's own wording (anti-inflammatory, analgesic, "appetite suppressant"...) is
+acceptable. Prompt is back to the run-#4 state (terpene effects traceable to the guide via lab percentages;
+Reported Uses = conditions/goals from the material). Legal review of the disclaimer/Cautions still pending.
+Note the prompt cache (5-minute TTL) had expired on every run, so each run paid the ~18k-token guide write
+(~14¢); back-to-back runs would be ~5-6¢.
