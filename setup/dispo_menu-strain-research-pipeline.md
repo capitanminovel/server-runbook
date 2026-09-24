@@ -26,20 +26,28 @@ strain's name** or it's reported "not found" (soft-404 / wrong-page guard). Stor
 paths are skipped (a dispensary's price row is not a strain page). robots.txt is honoured; 403/429/503
 = "blocked" and is **not bypassed**. Sitemaps are cached 6h (AllBud's is 2.8 MB / 16k strains).
 
-## COA handling
-No manual COA entry any more (form section removed). Terpene data comes from research (a supplier COA
-page such as Trailhead's `/coa`, cut to just this strain's card so a neighbour's numbers can't leak
-in) or Sweed (names + total %). Only terpene **names** are stored; percentages from the supplier COA
-aren't (top-3 only, several batches — undecided). `terpene_effects` is a separate field reasoned from
-the full terpene reference guide (`app/ai/reference/terpenes_research.md`, copied whole from the
-south-metro repo; sent as a **cached** system block).
+## COA handling and terpene effects
+No manual COA entry any more (form section removed). **Lab COA data is the source of terpene truth**: today
+the supplier's COA page (e.g. Trailhead `/coa`, cut to just this strain's card so a neighbour's numbers
+can't leak in); later Sweed's *full lab data* (`fullLabDataUrl` is null everywhere today — to be sourced).
+Sweed's terpene *tag list* is names-only and ranks below a lab COA.
+- The model copies terpene names + percentages for the **most recent completed batch** into `lab_terpenes`
+  (+ `lab_batch`, saved as `strains.terpene_batch`). Code then **verifies each value**: the terpene's name
+  and its percentage must sit next to each other on a fetched COA page, else it's dropped. (Limit: doesn't
+  check *which batch* a pair came from; a COA laid out unlike `Name · 0.474%` just fails to verify.)
+- A strain with verified lab terpenes is marked `coa_tested`.
+- `terpene_effects` (second Effects line) is built ONLY from lab percentages + the full terpene reference
+  guide (`app/ai/reference/terpenes_research.md`, copied whole; cached system block); code blanks it when
+  there are no lab percentages. Sweed tag names alone fill `terpenes` but produce no terpene effects.
+- `lineage` uses the source's own wording even when no cross is stated ("Trailhead cultivation
+  selection"); null only if the material says nothing about origin.
 
 ## Cost (measured, Cherry Lady Slipper, Opus 5; $ = my estimate from token counts)
 | Run | Tokens | ≈ Cost |
 |---|---|---|
 | Old search loop (Sonnet) | 354k in / 6.5k out | ~$1.15 |
 | Standard, no guide | 4.7k in / 1.7k out | ~5–6¢ |
-| Standard + guide, first run | 2.3k in + 17.7k cache-write / 1.8k out | ~14¢ |
+| Standard + guide, first run | 2.3–2.8k in + 17.7–18.2k cache-write / 1.5–1.8k out | ~14¢ (two runs) |
 | Standard + guide, cache hit (within 5 min) | ~same, cache read | ~5–6¢ |
 Deep-search tiers (~30¢ low, ~60–70¢ high) are planned; caps to be set from logged usage.
 
@@ -68,3 +76,9 @@ journalctl -u dispo-menu-api | grep -E "strain generation|page fetch|research " 
 venv/bin/python -c "from app.ai.page_fetcher import check_site; print(check_site('allbud.com','Blue Dream'))"
 ```
 Config: `STRAIN_GENERATOR_MODEL` in `.env` (default `claude-opus-5`); restart `dispo-menu-api` to apply.
+
+## Verified 2026-09-24 (Cherry Lady Slipper, Trailhead, Opus 5; 39s, ~14¢)
+Terpenes β-Caryophyllene 0.474 / α-Humulene 0.186 / β-Myrcene 0.126 from the Aug 13 batch (matches the
+page), `coa_tested` true, terpene effects Relaxed/Calm/Appetite-suppressing (each traceable to the guide),
+lineage "Trailhead cultivation selection". Wrinkles: "Appetite-suppressing" is a literal reading of the
+guide's humulene note (odd for a menu); Reported Uses included goal-like phrases ("Inspiration/creativity").
