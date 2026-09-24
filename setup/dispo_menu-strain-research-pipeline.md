@@ -131,3 +131,11 @@ Note the prompt cache (5-minute TTL) had expired on every run, so each run paid 
   code-read but not yet exercised.)
 - Endpoints: `GET /api/strains/{id}/sweed-candidates`, `POST /api/strains/{id}/sweed-links`,
   `DELETE /api/strains/{id}/sweed-links/{link_id}`; list/detail responses carry `sweed_links`.
+
+### Live-menu contents change (seen 2026-09-24)
+Sweed only lists what is on the menu *right now*. The same store returned ~143 products earlier in the day and 43
+later (carts: 0). A strain that matched a Tasty Gems cart in three earlier runs came back "no vapes product with
+this name on the live Sweed menu" — a correct answer, not an error (`Products/GetProductList` returned HTTP 200
+with an empty list; checked per category). Consequences: (1) a strain not on the menu gets no Sweed data and, if its
+name is misspelled, no store-spelling/alias retry either; (2) generation still works, just sparse (measured
+2.9¢: 4.7k in / 217 out, nothing read); (3) link a strain to the live menu while its product is listed.
