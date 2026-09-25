@@ -34,3 +34,14 @@
   (nothing writes to it now; Refresh could log snapshots when that tile is built).
 - Link to live menu is the replacement for the old sync's match suggestions: the app finds candidate products (name, type, brand, sizes) and one
   click connects them (never silent auto-link, per the project rule).
+
+## Done 2026-09-25 (later)
+- Roles (admin / employee, server-enforced), Team page, shared employee login supported; Education tile (sections, trainings, files,
+  video, viewer, drag to rearrange). See `setup/dispo_menu-education-and-roles.md`.
+- Security: API runs as unprivileged `dispo` user, sandboxed (`concepts/least-privilege-services.md`); Secure 12 h cookie;
+  Starlette vulnerabilities fixed.
+
+## Next / open (Education)
+- Individual employee logins (planned later; Team page already supports it) and who-read-what tracking (uses the Need to Read tag).
+- PDF.js viewer if staff use phones; storage move (Spaces / Drive) when disk gets tight; server RAM (~1 GB, heavy swap) — a 2 GB
+  droplet would give headroom; database user hardening (the app's DB role still owns its whole database).
