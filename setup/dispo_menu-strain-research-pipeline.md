@@ -257,3 +257,17 @@ the percentages are deliberately NOT shown or stored** — an average across pro
 (e.g. MAC Stomper: average beta-caryophyllene 1.15% vs 0.449% in its own Sweed lab data). With Sweed lab data, the real
 lab numbers are used and this is ignored. No extra AI call: our code fetches and parses the page, so the only cost is the
 page text in the prompt (~2k chars, roughly half a cent). Terpene-based effects still need real lab percentages.
+
+## Status model, archive/delete, test harness (2026-09-25)
+- **"Draft" is retired.** Generated profiles are final outputs an admin can edit. `strains.status` is now `active` =
+  linked to at least one live-menu product, `nonactive` = not linked (and, once the sync runs, linked-but-sold-out).
+  Linking flips it to active, unlinking the last link flips it back. Existing draft rows were migrated. (The enum value
+  `draft` remains in Postgres — it can't be dropped — and is unused.)
+- **Archive / delete:** `strains.archived_at` (null = live). Archive keeps everything and hides it from the main list;
+  the Archived filter shows them and offers Restore. **Permanent delete needs two deliberate steps in the UI ("Step 1 of
+  2" then typing the strain's name) and the API enforces both rules again:** the strain must already be archived and
+  `confirm_name` must match (`POST /api/strains/{id}/delete-permanently`). Links cascade; flags/log rows are removed.
+- List filters: All / Active / Not active / Archived (+ product type). `run_sync` no longer creates drafts.
+- **Free test harness:** `apps/api/scripts/research_check.py` runs 10 named cases through the research layer with no AI
+  cost (about 6 minutes: one headless browser lookup each). Cases and purpose: `docs/strain-generator-test-cases.md`.
+  Result on 2026-09-25: 10 pass, 0 warn, 0 fail.
