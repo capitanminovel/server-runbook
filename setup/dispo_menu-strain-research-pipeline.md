@@ -287,3 +287,6 @@ reports success and the old workers keep the old config (the reload error is onl
 Always check `ps -o lstart` of a worker / the error log after a reload.
 **What I learned:** the browser test earned its keep in the first hour; also the list must refresh silently after a card
 action (a "Loading…" flash collapsed every card), and a badge must follow the server-side status change.
+
+## Status model, edit, refresh — correction to the earlier note (2026-09-25)
+The earlier section mentioned `run_sync` and flags: both are now removed (see `setup/dispo_menu-roadmap.md`, "Done 2026-09-25").
