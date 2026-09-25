@@ -248,3 +248,12 @@ matching now also accepts `<strain>-(strain|cannabis|weed|marijuana|cultivar|rev
 (tested: `blue-dream-haze-strain-...` is NOT taken for Blue Dream). Both sites added to Sources; Dulce de Fresa now
 reads AllBud + JointCommerce + Kalikori (3 pages). Research sites: allbud, leafwell, cannaconnection, cannabis.net,
 strainpedia, seedsherenow, jointcommerce, kalikori.
+
+### Common terpenes from CannMenus (user, 2026-09-25) — names only, only without lab data
+cannmenus.com/strains/<name> publishes a strain's terpene profile as "the statistical mean" of lab COAs for products
+containing it (coverage: 7 of 8 test strains). `app/ai/common_terpenes.py` parses its "Full Terpene Distribution" block
+in code (top 8 by average). **When there is no Sweed lab data, those terpene NAMES fill the Terpenes line ("(common)");
+the percentages are deliberately NOT shown or stored** — an average across products is not this product's number
+(e.g. MAC Stomper: average beta-caryophyllene 1.15% vs 0.449% in its own Sweed lab data). With Sweed lab data, the real
+lab numbers are used and this is ignored. No extra AI call: our code fetches and parses the page, so the only cost is the
+page text in the prompt (~2k chars, roughly half a cent). Terpene-based effects still need real lab percentages.
