@@ -271,3 +271,19 @@ page text in the prompt (~2k chars, roughly half a cent). Terpene-based effects 
 - **Free test harness:** `apps/api/scripts/research_check.py` runs 10 named cases through the research layer with no AI
   cost (about 6 minutes: one headless browser lookup each). Cases and purpose: `docs/strain-generator-test-cases.md`.
   Result on 2026-09-25: 10 pass, 0 warn, 0 fail.
+
+## Incident: strain list silently failed to load under quick clicking (found by the new UI test, 2026-09-25)
+**What happened:** the saved browser test failed at random points: the list showed no strains, the delete "did nothing".
+**Why:** nginx's rate limit for the paid generate call (`dispo_ai_generation`, 30/min + burst 10) was attached to the
+exact path `/api/strains/`, which is ALSO the list request (GET). The comment claimed normal use "never notices it",
+but Archive / Restore / filters / link each refetch the list, so ~20 quick clicks tripped it. nginx answered 503 with no
+CORS headers, which the browser reports as a bare "Failed to fetch" -- and the app never saw the request.
+**Fix:** `map $request_method` gives every non-POST an empty key (nginx does not limit an empty key), so only POST
+(generate) is limited; a new location covers `POST /api/strains/<id>/redo` (it calls the AI too and had no limit). Proven:
+60 rapid list GETs all 200; 45 rapid POSTs -> 13 reached the app, 32 got 503.
+**Gotcha learned:** nginx refuses to reload when an existing limit zone changes its key type -- `systemctl reload` still
+reports success and the old workers keep the old config (the reload error is only in /var/log/nginx/error.log:
+`limit_req ... uses the ... key while previously it used the ...`). Fix = a new zone name (`dispo_generate`).
+Always check `ps -o lstart` of a worker / the error log after a reload.
+**What I learned:** the browser test earned its keep in the first hour; also the list must refresh silently after a card
+action (a "Loading…" flash collapsed every card), and a badge must follow the server-side status change.
