@@ -1,0 +1,41 @@
+# dispo_menu API. Runs as the unprivileged 'dispo' user from the deployed copy in /opt/dispo-menu (root-owned,
+# read-only to the service). The only writable place is /var/lib/dispo-menu (training uploads, browser profile).
+# Deploy changes with /root/Dispo_menu/deploy.sh. See server-runbook setup/dispo_menu-service-hardening.md.
+[Unit]
+Description=dispo_menu FastAPI App
+After=network.target postgresql.service
+
+[Service]
+User=dispo
+Group=dispo
+WorkingDirectory=/opt/dispo-menu/api
+EnvironmentFile=/opt/dispo-menu/api/.env
+Environment=HOME=/var/lib/dispo-menu
+Environment=PLAYWRIGHT_BROWSERS_PATH=/opt/dispo-menu/ms-playwright
+ExecStart=/opt/dispo-menu/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8003
+Restart=always
+RestartSec=3
+UMask=0077
+
+# --- sandboxing (systemd). Limits the damage if the app is ever tricked into running something. ---
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectSystem=strict
+ReadWritePaths=/var/lib/dispo-menu
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+RestrictNamespaces=no
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+
+[Install]
+WantedBy=multi-user.target
