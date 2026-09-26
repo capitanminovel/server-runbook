@@ -54,3 +54,8 @@
 - **Code map**: `Dispo_menu/docs/CODE_MAP.md` — where everything lives and where to change it (linked from CLAUDE.md).
 - **Next: scheduled Refresh (cron)** — run Refresh live menu on a timer so statuses, sizes, prices and the brand list stay current
   without anyone clicking. Watch memory: each run starts a headless browser (~150-250 MB) on a ~1 GB droplet.
+
+## Sweed official API + live-menu CPU (2026-09-26)
+- **Measured:** one Playwright menu read takes 15–20 s at 100% of the single CPU. Blocking images and fonts doesn't help, because the cost is Chrome plus the store's JavaScript. Hourly refreshes are fine for up to about 30–50 dispensaries if they run one at a time, staggered, at low priority (`Nice`/`CPUWeight`), during store hours only.
+- **Sweed launched a Public API (Aug 2026).** Key comes from the retailer's Sweed account manager and is bound to specific stores. `GET /v2/stores/{id}/products` returns per-variant stock and prices plus `compounds` (THC, CBD, terpenes); the detail endpoint adds COA `documents`. Rate-limited, so cache server-side. Webhooks are "coming soon". **Price not published.** Docs: https://api-demo.sweedpos.com/docs/#ecom-api-v2
+- Next: ask Legit's Sweed rep (see the questions in chat / below). If we get a key, swap `sweed_client._fetch_live` to the API and keep Playwright as the fallback.
