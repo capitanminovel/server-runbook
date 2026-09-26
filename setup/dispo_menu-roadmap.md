@@ -1,12 +1,14 @@
 # dispo_menu — roadmap and open items (kept current)
 
 ## STILL TO DO — one list (updated 2026-09-26)
-**Next big build: Customer menu + kiosk** — spec in the repo: `Dispo_menu/docs/customer-menu-spec.md`.
-Browse-only (no cart/ordering), no Sold out / New badges; our strain profiles + Sweed photo, sizes, price, THC; filter by
-effects / type; tap for the full profile; `/kiosk` mode for a big in-store screen with a rotating strain showcase.
-Before building, answer the spec's open questions — most important: **legal/compliance review** (effects & "therapeutic"
-wording for the public, 21+ age gate on the web menu, Cautions), order link or not, kiosk hardware, domain.
-First code step: keep images / sale price / unit size / THC per variant in the refresh (not stored today).
+**Customer menu + kiosk: v1 BUILT 2026-09-26** (`setup/dispo_menu-customer-menu.md`). Still to do for it:
+- [ ] Compliance/legal review (effects + "Reported uses" wording, 21+ gate, Cautions) → then remove the dev password.
+- [ ] Full profiling run of the menu (in a Claude session, not API tokens) — products without a profile don't show.
+- [ ] Menu Editor tile: hide/feature strains, choose public sections, kiosk timings.
+- [ ] Kiosk hardware (TV + mini PC or big tablet) + Chrome kiosk-mode setup at the store.
+- [ ] Fix profiles whose Indica/Sativa/Hybrid differs from the package (MAC Stomper); the menu already shows the store's label.
+- [ ] Real dispensary name in `dispensaries.name` (shows in the menu header) and a real domain.
+- [ ] Future product-domain ideas (no underscores allowed): yourdispotool.com, your-dispo-tool.com, dispotool.com, urdispotool.com.
 
 **Server / ops (waiting on you)**
 - [ ] Reboot for the new kernel (steps in "Server check + updates" below).
