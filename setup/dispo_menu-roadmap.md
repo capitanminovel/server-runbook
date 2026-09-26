@@ -45,3 +45,12 @@
 - Individual employee logins (planned later; Team page already supports it) and who-read-what tracking (uses the Need to Read tag).
 - PDF.js viewer if staff use phones; storage move (Spaces / Drive) when disk gets tight; server RAM (~1 GB, heavy swap) — a 2 GB
   droplet would give headroom; database user hardening (the app's DB role still owns its whole database).
+
+## 2026-09-26
+- **Brand suggestions from the live menu**: "+ Add new brand" lists menu brands not in your list (exact spelling) and brands spelled
+  differently ("Use menu spelling"). The list is saved on the dispensary (`dispensaries.menu_brands`) by Refresh live menu and by the
+  lookup itself; the form reads the saved list instantly and only reads the live menu (~12-30 s) when it is older than 6 h.
+- **Refresh live menu** now also suggests links (menu products matching an existing strain, one click) and names what went off the menu.
+- **Code map**: `Dispo_menu/docs/CODE_MAP.md` — where everything lives and where to change it (linked from CLAUDE.md).
+- **Next: scheduled Refresh (cron)** — run Refresh live menu on a timer so statuses, sizes, prices and the brand list stay current
+  without anyone clicking. Watch memory: each run starts a headless browser (~150-250 MB) on a ~1 GB droplet.
