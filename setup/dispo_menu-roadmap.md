@@ -1,5 +1,32 @@
 # dispo_menu — roadmap and open items (kept current)
 
+## STILL TO DO — one list (updated 2026-09-26)
+**Next big build: Customer menu + kiosk** — spec in the repo: `Dispo_menu/docs/customer-menu-spec.md`.
+Browse-only (no cart/ordering), no Sold out / New badges; our strain profiles + Sweed photo, sizes, price, THC; filter by
+effects / type; tap for the full profile; `/kiosk` mode for a big in-store screen with a rotating strain showcase.
+Before building, answer the spec's open questions — most important: **legal/compliance review** (effects & "therapeutic"
+wording for the public, 21+ age gate on the web menu, Cautions), order link or not, kiosk hardware, domain.
+First code step: keep images / sale price / unit size / THC per variant in the refresh (not stored today).
+
+**Server / ops (waiting on you)**
+- [ ] Reboot for the new kernel (steps in "Server check + updates" below).
+- [ ] OK to remove the CUPS printer snap and set `PermitRootLogin prohibit-password`.
+- [ ] Turn on alert email (Gmail app password → `/opt/dispo-menu/api/.env`; see `setup/dispo_menu-backups-and-alerts.md`).
+- [ ] Turn on DigitalOcean droplet backups (off-server copies).
+- [ ] Outside uptime monitor (UptimeRobot) on `https://dispo-api.dev.withcapitan.com/health`.
+- [ ] Confirm Legit's real store hours → `MENU_REFRESH_HOURS` in `.env`.
+- [ ] Memory headroom: run Claude Code from the laptop, and/or resize to 2 GB.
+
+**Product**
+- [ ] Ask Legit's Sweed rep for an official Public API key (Ecom/Catalog only) + price — not urgent now that the direct read works.
+- [ ] Menu Editor tile (hide/feature strains, public fields, kiosk settings) — part of the customer-menu build.
+- [ ] Product History tile.
+- [ ] Individual employee logins (one shared employee login today).
+- [ ] Onboarding plan for a whole menu (see below).
+- [ ] Production demo: separate domain + database + fresh secrets + `dev`/`main` branch split.
+- [ ] Schedule tile picture (`apps/admin/src/assets/schedule-icon.png`).
+- [ ] Later upgrades held back on purpose: SQLAlchemy 2.1, bcrypt 5 (each with its own tested upgrade).
+
 ## Needed, decided to do LATER
 - **Onboarding plan for new dispensaries / new products** (decided 2026-09-25: "do later, just mark as needed").
   Question to settle: how to profile a whole menu (100-200 products) cheaply. Options noted, none chosen:
