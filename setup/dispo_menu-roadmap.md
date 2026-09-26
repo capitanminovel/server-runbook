@@ -67,3 +67,34 @@
 - These endpoints are internal and undocumented and can change without notice. The official Public API key (ask Legit's Sweed rep) is still the long-term route, but it's no longer urgent.
 - Effect: hourly scheduled refreshes are now cheap even for many dispensaries. The CPU/queue concerns above mostly go away. Playwright stays installed only for the backup.
 - Tests after deploy: research_check 16 pass / 1 warn (MAC Stomper menu changed) / 0 fail; ui_check 29/29; no browser fallbacks.
+
+## Server check + updates (2026-09-26)
+- **Tests after all changes (regression):** jobs_check 13/13, schedule_check 17/17, education_check 23/23, ui_check 29/29,
+  research_check 16 pass / 1 warn (MAC Stomper menu listing changed) / 0 fail. smoke_paid not run (costs Claude credits; nothing in the AI call changed).
+- **Packages:** Python 0 known vulnerabilities (pip-audit), admin site 0 (npm audit). OS: 44 updates installed;
+  held back `fwupd` (major version jump, irrelevant on a VM) and `xvfb`/`xserver-common` (Ubuntu phased rollout — will arrive by themselves).
+- **Reboot needed** for kernel 6.8.0-138 → 142 and to restart services using updated libraries (postgres, ssh, journald, cron, dbus).
+  All services on the droplet (dispo_menu, money_buddy, capitans_terps, Pi-hole) go down ~1–2 min. Steps:
+  ```bash
+  reboot
+  # reconnect after ~1 min, then:
+  uname -r                                   # 6.8.0-142-generic
+  systemctl --failed                         # should list nothing
+  systemctl is-active nginx postgresql@16-main dispo-menu-api pihole-FTL money-buddy capitans-terps fail2ban
+  systemctl list-timers 'dispo-menu-*'       # all three scheduled
+  curl -s https://dispo-api.dev.withcapitan.com/health
+  ```
+  tmux sessions don't survive a reboot: afterwards `tmux new -A -s claude`, then `claude --continue`.
+- **Healthy:** no failed units; firewall default deny, only 22/80/443 open to all, Pi-hole 53/8080/8443 only to the trusted IP;
+  SSH keys only (password auth off); fail2ban jails sshd + nginx-botsearch + nginx-probe; certs valid to 2026-10-31 (certbot timer on);
+  disk 62 %; unattended security upgrades on.
+- **Found, awaiting OK:**
+  - **CUPS printing service** (snap `cups`) runs as root listening on 0.0.0.0:631. Blocked by the firewall's default deny,
+    but a server has nothing to print → `snap remove cups`.
+  - **`PermitRootLogin yes`** in `/etc/ssh/sshd_config`. Passwords are already off, so it's effectively key-only; setting
+    `prohibit-password` makes that explicit if password auth is ever re-enabled by mistake. (Longer term: a non-root sudo user.)
+    SSH changes risk a lockout: test `sshd -t`, keep the current session open, and try a second login before closing it.
+  - **Memory:** 961 MB total, ~300 MB available, 510 MB swap in use — mostly Claude Code (~400 MB). Moving Claude to the
+    laptop or a 2 GB droplet is still the main headroom fix.
+  - Turn on **DigitalOcean droplet backups** (off-server copies; on-server nightly backups only cover mistakes).
+  - Outside uptime monitor (UptimeRobot) on `/health` — the only thing that can tell you the whole droplet is down.
