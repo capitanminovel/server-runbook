@@ -2,6 +2,12 @@
 
 Spec + decisions: `Dispo_menu/docs/customer-menu-spec.md`. Browse-only (no cart/ordering), for customers.
 
+## Layout principle (decided 2026-09-26)
+**Strain profile first, shelf last.** Stock comes and goes; the profile is what customers read. Cards: feel, taste,
+terpenes, then a small "Flower 3.5 g · $55" line. Detail: about → feel → taste → terpenes → lineage → fact → reported
+uses → "If you like this, try" → **On the shelf now** (sizes, prices). Kiosk showcase has no price. Also a
+Daytime / Evening / Any time tag worked out from each strain's effects.
+
 ## Where it runs
 - Web: https://dispo-menu.dev.withcapitan.com (phones/tablets/computers, 21+ gate) — `/strain/<id>` per strain.
 - Kiosk: https://dispo-menu.dev.withcapitan.com/kiosk (landscape TV or tablet; no age gate; idle showcase after 60 s).
@@ -29,5 +35,5 @@ Refresh (5-min timer) → saves each linked product's sizes, prices, sale price,
 - Products without a strain profile are not shown.
 
 ## Tests
-`cd apps/api && DISPO_BASIC_USER=… DISPO_BASIC_PASS=… venv/bin/python scripts/menu_check.py` — 29 checks: whitelist,
+`cd apps/api && DISPO_BASIC_USER=… DISPO_BASIC_PASS=… venv/bin/python scripts/menu_check.py` — 32 checks (incl. shelf-is-last, suggestions, time filter): whitelist,
 Active-only, prices/sizes, 21+ gate, mood & type filters, deep links, phone/tablet/TV layouts, kiosk showcase, no JS/CSP errors.
