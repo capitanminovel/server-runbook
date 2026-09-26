@@ -55,3 +55,11 @@ service account (works, but files are served through our app anyway to keep them
 `pip-audit` found 14 known vulnerabilities in Starlette 0.41.3 (under FastAPI) -> upgraded to FastAPI 0.141.1 / Starlette 1.7.0
 (pinned in requirements.txt), re-audit clean; `npm audit` on the admin app: 0. Re-run both before each release:
 `python3 -m venv /tmp/a && /tmp/a/bin/pip install pip-audit && /tmp/a/bin/pip-audit -r apps/api/requirements.txt`; `npm audit --omit=dev`.
+
+## Look and feel (2026-09-25/26)
+Brand taken from mnlegitcannabis.com's own stylesheet: action pink `#ea75b3` (buttons/bands, always with dark text — white on
+that pink fails contrast), black/white, headings **Cormorant Garamond**, text **Inter** (both open-license, bundled via
+@fontsource — no requests to Google; their script font Sign Painter is a paid license, not used). Login + dashboard: the store's
+mural (web copy 324 KB of a 5.4 MB original) between pink bands (`?band=black` previews black bands). Inner pages: pink band with
+logo (→ dashboard), quick links, user + Log out, on a light off-white page so forms and lists stay readable. Green is kept only
+for the Active status badge (it carries meaning). Colours live as CSS variables in `apps/admin/src/index.css` (`--brand-*`).
