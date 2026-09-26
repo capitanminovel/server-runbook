@@ -63,3 +63,18 @@ that pink fails contrast), black/white, headings **Cormorant Garamond**, text **
 mural (web copy 324 KB of a 5.4 MB original) between pink bands (`?band=black` previews black bands). Inner pages: pink band with
 logo (→ dashboard), quick links, user + Log out, on a light off-white page so forms and lists stay readable. Green is kept only
 for the Active status badge (it carries meaning). Colours live as CSS variables in `apps/admin/src/index.css` (`--brand-*`).
+
+## Viewing PDFs and video (2026-09-26)
+- **PDFs are drawn by PDF.js** (`pdfjs-dist`, Apache-2.0, Mozilla's open-source reader), not the browser's built-in viewer. An `<iframe>` of a PDF is blank or download-only on iPhone and most Android phones; PDF.js draws each page onto a `<canvas>` so it looks the same everywhere. Pages render lazily as you scroll.
+- **The work happens in each viewer's browser.** The server only hands over the file (auth-checked, same as before). 10 people reading at once ≈ 10 file downloads (10 × 3.7 MB ≈ 37 MB), versus about 1 TB/month of transfer included with the droplet. No server upgrade needed and no extra cost. It's free software we ship, not a paid service.
+- **Video never touches our server.** YouTube and Vimeo stream it; we only embed their player.
+- **nginx gotcha:** the PDF.js worker is a `.mjs` file. nginx's default `mime.types` doesn't know `.mjs`, so it sent `application/octet-stream` and browsers refused to run it as a module ("This PDF could not be shown here"). Fixed in `/etc/nginx/sites-available/dispo-admin.dev.withcapitan.com` (backup in `/root/backups`):
+  ```nginx
+  location ~* \.mjs$ {
+      types { }
+      default_type text/javascript;
+  }
+  ```
+  Check: `curl -sI -u dispo:… https://dispo-admin.dev.withcapitan.com/assets/<pdf.worker…>.mjs | grep -i content-type`
+- Fonts/cmaps/wasm for PDF.js are copied into the build by `apps/admin/scripts/copy-pdfjs-assets.mjs` (the `prebuild` step), so nothing loads from a CDN.
+- **2 GB quota in practice:** ~550 PDFs the size of the 3.7 MB "Concentrates" test. Realistic mixes (PDFs 1–5 MB, slide decks 5–20 MB, photos <1 MB) land around 400–2,000 files. That's plenty for one dispensary's trainings. The quota is `UPLOAD_QUOTA_MB` in `.env`. The disk has about 9 GB free, so when several dispensaries fill up, the move is DigitalOcean Spaces (object storage).
