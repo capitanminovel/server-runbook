@@ -59,3 +59,11 @@
 - **Measured:** one Playwright menu read takes 15–20 s at 100% of the single CPU. Blocking images and fonts doesn't help, because the cost is Chrome plus the store's JavaScript. Hourly refreshes are fine for up to about 30–50 dispensaries if they run one at a time, staggered, at low priority (`Nice`/`CPUWeight`), during store hours only.
 - **Sweed launched a Public API (Aug 2026).** Key comes from the retailer's Sweed account manager and is bound to specific stores. `GET /v2/stores/{id}/products` returns per-variant stock and prices plus `compounds` (THC, CBD, terpenes); the detail endpoint adds COA `documents`. Rate-limited, so cache server-side. Webhooks are "coming soon". **Price not published.** Docs: https://api-demo.sweedpos.com/docs/#ecom-api-v2
 - Next: ask Legit's Sweed rep (see the questions in chat / below). If we get a key, swap `sweed_client._fetch_live` to the API and keep Playwright as the fallback.
+
+## Live menu now read without a browser (2026-09-26)
+- Tested: Sweed's storefront endpoints (`/_api/Products/GetProductList`, `GetExtendedLabdata`) answer a plain HTTPS POST with just the `storeid` header. No cookies, no Chrome. This is the same request the public menu page makes for every visitor, and it isn't behind a bot check.
+- `sweed_client.py` now does that, with an honest User-Agent (`dispo_menu/1.0 …`). **Full menu: ~1 s and ~0.1 s CPU, down from 15–20 s at 100% CPU.** Memory per read went from ~200 MB to a few MB.
+- **Backup:** if the first direct call fails, it logs `Sweed direct call failed … falling back to the headless browser` and uses the old Chrome path. If that line shows up in `journalctl -u dispo-menu-api`, Sweed changed something.
+- These endpoints are internal and undocumented and can change without notice. The official Public API key (ask Legit's Sweed rep) is still the long-term route, but it's no longer urgent.
+- Effect: hourly scheduled refreshes are now cheap even for many dispensaries. The CPU/queue concerns above mostly go away. Playwright stays installed only for the backup.
+- Tests after deploy: research_check 16 pass / 1 warn (MAC Stomper menu changed) / 0 fail; ui_check 29/29; no browser fallbacks.
