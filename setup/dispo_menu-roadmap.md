@@ -9,6 +9,7 @@
 - [ ] Fix profiles whose Indica/Sativa/Hybrid differs from the package (MAC Stomper); the menu already shows the store's label.
 - [ ] Real dispensary name in `dispensaries.name` (shows in the menu header) and a real domain.
 - [ ] Product domain: dispotool.com is taken (parked for sale, Afternic); free on 2026-09-27: yourdispotool.com, getdispotool.com, dispotools.com, urdispotool.com, dispotool.io. Decide + register (~$10-15/yr for .com).
+  More free .coms (2026-09-27): terpatlas, strainroom, terpcompass, strainshelf, strainstack, budtenderkit, dispotoolhq, usedispotool, trydispotool, dispotoolkit. Search USPTO (tmsearch.uspto.gov) for the name before buying.
 
 **Server / ops (waiting on you)**
 - [ ] Reboot for the new kernel (steps in "Server check + updates" below).
