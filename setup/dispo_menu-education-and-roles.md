@@ -89,3 +89,20 @@ for the Active status badge (it carries meaning). Colours live as CSS variables 
   every employee. It's a FUTURE feature — see the roadmap. The full version (per-login "I've read this", Need to Read /
   New Hire progress, Updated-read-again, admin who-read) is commit `5859779` in Dispo_menu; the removal is the next commit
   (its migration dropped `training_reads` and `trainings.content_updated_at`).
+
+## Schedule tab, round 2 (2026-09-27)
+Research: post schedules ~2 weeks ahead (fair-workweek practice); staff need to know when it was posted and whether it
+changed; keep a record of what was posted and when (predictive-scheduling rules often say 2–3 years). Minnesota has no
+statewide law; a source claims Minneapolis/St. Paul have local fair-scheduling rules — unverified, worth confirming with
+HR since Legit has a Minneapolis (Dinkytown) store.
+- Opens on **This week**, then **Coming up**, then **Past & earlier versions** (folded).
+- "Posted Sep 27" / "Updated Sep 29 — replaces the version posted Sep 27".
+- **Replace file** keeps the old version as "Replaced" (`schedule_posts.replaced_at`, `replaced_by_id`); deleting the
+  newest version restores the previous one; Delete warns that schedules are often kept for records.
+- Admin reminder when nothing is posted about two weeks ahead; the form starts the day after the last schedule ends.
+- nginx upload location now includes `/api/schedule/<id>/replace`.
+
+## Strain List (2026-09-27)
+- Linked sizes show sale prices ("$52 $45 SALE"). Every Refresh (manual or the 5-minute auto) overwrites each linked
+  product's sizes, prices and sale price, so an ended sale is gone on the next run; the customer menu follows within ~6 min.
+- "Live menu · N linked" is a pill with a ▸ arrow so it reads as a dropdown.
