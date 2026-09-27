@@ -322,3 +322,22 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
   in a separate process with a 20 s timeout and a 512 MB memory cap, so a hostile PDF can't hang the API.
 - **Switch:** `FEATURE_COA_FILES=true` in `/opt/dispo-menu/api/.env` (dev). Off by default; off = routes 404, research ignores it.
 - **Test:** `apps/api/scripts/coa_check.py` (free; temp strain, 11 checks).
+
+## Other names, Pages to read, lineage check, Find other names — added 2026-09-27 (dev)
+- **Why:** the store sells "Double Sour Grape"; research sites only know the same plant (Grape Crinkle x Sour Stomper)
+  as "Double Grape". Found by the team testing on the demo.
+- **Also known as** (`strains.aka`, admin-entered): research retries every site that found nothing under each other
+  name. **Lineage check** (`app/ai/lineage_check.py`): a page found under another name is used only if it names OUR
+  parents (from the strain's lineage, else the store description's cross). Different parents -> "not used"; no parents
+  stated -> "can't confirm, not used". Free.
+- **Pages to read** (`strains.reference_urls`): links an admin found by hand; same safe fetcher (http(s), no private
+  addresses, robots.txt); used only if the page names the strain, an other name, or its parents. Free.
+- The name box now refuses two names ("A, B") and points to Also known as.
+- **Find other names** (paid, `FEATURE_NAME_SEARCH`, dev only): Haiku + Anthropic web search (max 2 searches) proposes
+  pages for the same parents; our code reads each and keeps only names whose page names our parents. Nothing is saved
+  until the admin clicks Use. **Measured: $0.039, 13 s** for Double Sour Grape -> found Double Grape (Strainpedia);
+  Leafly/GrowDiaries unreadable (bot blocks, respected). ~2c of that is the two searches -- one search would be ~2c.
+- **Redo profile** button on every strain card (asks first, ~10-17c): research + AI again using other names, pages and
+  COAs; hand-edited fields are kept.
+- Before turning Find other names on for the demo: add an nginx rate limit for `/api/strains/<id>/find-other-names`
+  (it's admin-only and behind dev basic auth today) and decide whether it counts toward the 10-generation cap.
