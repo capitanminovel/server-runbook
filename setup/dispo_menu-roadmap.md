@@ -11,6 +11,17 @@
 - [ ] Product domain: dispotool.com is taken (parked for sale, Afternic); free on 2026-09-27: yourdispotool.com, getdispotool.com, dispotools.com, urdispotool.com, dispotool.io. Decide + register (~$10-15/yr for .com).
   More free .coms (2026-09-27): terpatlas, strainroom, terpcompass, strainshelf, strainstack, budtenderkit, dispotoolhq, usedispotool, trydispotool, dispotoolkit. Search USPTO (tmsearch.uspto.gov) for the name before buying.
 
+**Strain Generator: research misses when the brand isn't the grower** (found 2026-09-27, Octane Mintz)
+- Octane Mintz = Trailhead's own MN cultivar. Flower (brand Trailhead) → read trailheadmn.com/strains/octane-mintz → full
+  profile. Rosin (brand Marawanna, no website on file) → only the Sweed listing → no flavors/aroma/fact. General strain
+  sites (AllBud etc.) have nothing on MN-only cultivars. `gather_research` only reads the SELECTED brand's website.
+- Same plant regardless of who made the product → strain-level facts should be shared; product-level facts
+  (this batch's lab terpenes, format, the maker's description) stay per product.
+- [ ] Fix (free, no AI): (1) reuse our own existing profile of the same strain name as research input; (2) when the
+  chosen brand's site has nothing, try the other 10 known brand sites' strain pages; (3) a "fill gaps from <sibling>"
+  button to copy strain-level fields (flavors, aroma, lineage, facts) into a thin profile, no AI cost.
+- [ ] Data: add Marawanna's (and Redwood County Weed Co's) website to Brands if they have one.
+
 **Server / ops (waiting on you)**
 - [ ] Reboot for the new kernel (steps in "Server check + updates" below).
 - [ ] OK to remove the CUPS printer snap and set `PermitRootLogin prohibit-password`.
