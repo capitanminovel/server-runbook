@@ -1,0 +1,51 @@
+# dispo_menu demo site: legitdemo.withcapitan.com (set up 2026-09-27)
+
+For Legit's admin team to use now. It's a **separate copy** of dispo_menu: same code as dev, but its own database,
+service user, files and settings, so dev work and tests can't break what the team is using.
+
+## What's different from dev
+| | Dev | Demo |
+|---|---|---|
+| Address | dispo-admin / dispo-api / dispo-menu `.dev.withcapitan.com`, basic auth | `legitdemo.withcapitan.com`: admin at `/`, API at `/api` (same address, no CORS); app login only |
+| Database | `dispo_menu_dev` (login `dispo_menu`) | `dispo_menu_demo` (login `dispo_demo`, can't connect to dev's DB) |
+| Service user | `dispo` | `dispo-demo` |
+| Code / venv | `/opt/dispo-menu` | `/opt/dispo-menu-demo` |
+| Data / uploads / backups | `/var/lib/dispo-menu` | `/var/lib/dispo-menu-demo` |
+| API | `dispo-menu-api`, port 8003 | `dispo-menu-demo-api`, port 8004 |
+| Jobs | `dispo-menu-{refresh,health,backup}` | `dispo-menu-demo-{refresh,health,backup}` (generated from dev's units at deploy) |
+| COA lab reports | on | **off** (`FEATURE_COA_FILES=false`) |
+| AI generations | no cap | **10** (`AI_GENERATION_LIMIT=10`; new profiles + Redos; refused before any paid call) |
+| Customer menu / Kiosk | yes | **hidden**; nginx returns 404 for `/api/public/` until the legal review |
+
+## How it was set up
+- Data: `pg_dump` of dev (38 strains, brands, trainings, schedule, research sites) restored as `dispo_demo`; dev's logins
+  removed; one admin **admin@legitdemo.com** created with a random password (initial password:
+  `/root/backups/.demo-admin-initial-pw`, root-only; change it after first login). AI-generation count reset to 0.
+  Dispensary renamed "Legit Cannabis (demo)". Uploads (13 MB) copied.
+- `.env`: `/opt/dispo-menu-demo/api/.env` (root:dispo-demo 640, not in git): own `SESSION_SECRET` (dev cookies don't
+  work here), own DB login, same Anthropic key and Sweed settings as dev.
+- nginx: `/etc/nginx/sites-available/legitdemo.withcapitan.com` + `snippets/dispo-demo-proxy.conf`; same rate-limit
+  zones as dev; `X-Content-Type-Options`, `X-Frame-Options DENY`, `Referrer-Policy`. TLS by certbot (auto-renews).
+- Postgres hardening done at the same time: `REVOKE CONNECT ON DATABASE dispo_menu_dev FROM PUBLIC` (by default any
+  login could connect to any database).
+
+## Deploying
+`./deploy.sh demo` from `/root/Dispo_menu`. It is **never** part of `./deploy.sh` (all), so dev work reaches the team
+only when you choose. It syncs the code, installs requirements if they changed, runs migrations as `dispo-demo`,
+installs/refreshes units, restarts, and builds the admin with an empty API base URL and no menu URL.
+
+## Things to know
+- **RAM:** the droplet has 1 GB. The second API process fits but leans on swap (about 700 MB of swap in use after setup).
+  Moving to the 2 GB droplet would make both copies comfortable.
+- The Anthropic key is shared with dev: the demo's 10-generation cap is the spend guard. Deleting a strain doesn't give
+  a generation back.
+- The demo's 5-minute refresh also calls Sweed, so the store's menu is now read by both copies.
+- No headless-browser fallback on the demo (plain HTTPS Sweed reads only).
+
+## Key commands
+```bash
+systemctl status dispo-menu-demo-api
+journalctl -u dispo-menu-demo-api -f
+systemctl list-timers | grep demo
+sudo -u postgres psql -d dispo_menu_demo -c "select count(*) from ai_generations"   # generations used
+```
