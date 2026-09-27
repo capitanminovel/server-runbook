@@ -82,6 +82,9 @@ for the Active status badge (it carries meaning). Colours live as CSS variables 
 ## Search, quick filters, Next › (2026-09-27)
 - Search (names, descriptions, file names, sections), quick filters (Need to Read / New Hire / Pinned), "Next ›" inside
   a training, full-screen viewer on phones with the Next bar at the bottom. Drag-to-rearrange pauses while filtering.
+- From the research, for an open library: a numbered **"New here? Start with these"** path of the New Hire trainings
+  (in page order — drag to reorder the path; Next › follows it), a **New** badge for 14 days after a training is added
+  (same for everyone), and cards that say what's inside ("Video · PDF · Slides").
 - **Read tracking was built, tested (34 checks) and then removed the same day** at the user's call: trainings are open to
   every employee. It's a FUTURE feature — see the roadmap. The full version (per-login "I've read this", Need to Read /
   New Hire progress, Updated-read-again, admin who-read) is commit `5859779` in Dispo_menu; the removal is the next commit
