@@ -17,10 +17,10 @@
   sites (AllBud etc.) have nothing on MN-only cultivars. `gather_research` only reads the SELECTED brand's website.
 - Same plant regardless of who made the product → strain-level facts should be shared; product-level facts
   (this batch's lab terpenes, format, the maker's description) stay per product.
-- [ ] Fix (free, no AI): (1) reuse our own existing profile of the same strain name as research input; (2) when the
+- [x] **Done 2026-09-27** (see setup/dispo_menu-strain-research-pipeline.md). Fix (free, no AI): (1) reuse our own existing profile of the same strain name as research input; (2) when the
   chosen brand's site has nothing, try the other 10 known brand sites' strain pages; (3) a "fill gaps from <sibling>"
   button to copy strain-level fields (flavors, aroma, lineage, facts) into a thin profile, no AI cost.
-- [ ] Data: add Marawanna's (and Redwood County Weed Co's) website to Brands if they have one.
+- Marawanna has no website (confirmed by the user) — that's exactly the case the fix covers.
 
 **Server / ops (waiting on you)**
 - [ ] Reboot for the new kernel (steps in "Server check + updates" below).

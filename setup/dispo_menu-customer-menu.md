@@ -37,3 +37,11 @@ Refresh (5-min timer) → saves each linked product's sizes, prices, sale price,
 ## Tests
 `cd apps/api && DISPO_BASIC_USER=… DISPO_BASIC_PASS=… venv/bin/python scripts/menu_check.py` — 32 checks (incl. shelf-is-last, suggestions, time filter): whitelist,
 Active-only, prices/sizes, 21+ gate, mood & type filters, deep links, phone/tablet/TV layouts, kiosk showcase, no JS/CSP errors.
+
+## iPad / iPhone (2026-09-27)
+Every iPad/iPhone browser — **Chrome included** — uses Apple's WebKit engine, so "it works in Chrome" on a computer says
+nothing about an iPad. Photos looked wrong on an iPad: the images used `height: 100%` inside an `aspect-ratio` box,
+which WebKit doesn't resolve there (draws the image full size). Fix: images are pinned to the box with
+`position: absolute; top: 0; left: 0; width/height: 100%`, plus a padding-based fallback for iOS < 15 (no
+`aspect-ratio`). Playwright's WebKit needs ~218 extra system packages (GStreamer, virtual display...) — deliberately
+NOT installed on this production server; run WebKit tests from the laptop instead.

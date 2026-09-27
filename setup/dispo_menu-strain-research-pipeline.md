@@ -290,3 +290,23 @@ action (a "Loading…" flash collapsed every card), and a badge must follow the 
 
 ## Status model, edit, refresh — correction to the earlier note (2026-09-25)
 The earlier section mentioned `run_sync` and flags: both are now removed (see `setup/dispo_menu-roadmap.md`, "Done 2026-09-25").
+
+## Same strain, other product (2026-09-27)
+**Why:** Octane Mintz is Trailhead's MN-only cultivar. As Trailhead flower the research read trailheadmn.com's strain page →
+rich profile. As Marawanna rosin (Marawanna has no website) research only had the Sweed listing → no flavors, aroma or
+fact. Research used to read only the SELECTED brand's site, and general strain sites don't know MN-only cultivars.
+
+**Now (all free, no AI):**
+1. `earlier_profiles`: if we already profiled the same strain name (other brand/type), its source pages are re-read
+   (never lab/COA pages — those are another product's batches) and its strain-level facts are shown to the AI, marked
+   "strain facts carry over; lab numbers, format and maker do NOT".
+2. `other_brand_websites`: when the chosen brand's own site gives nothing, the dispensary's other brands' sites are
+   searched for the strain page (role `other_brand`, shown as "Another brand's page (likely the grower)"). Only hits
+   are listed, plus one summary row "Other brands' sites · N checked".
+3. **Fill empty fields** button (Strain List, admin, in an opened card): copies lineage, type, flavors, aroma, effects
+   and Misc fact from our other profile of the same strain into EMPTY fields only. Never overwrites; lab terpenes and
+   the maker's description stay per product. Adds a source line saying where the facts came from.
+
+Code: `app/ai/strain_siblings.py`, `research.gather_research(...)`, `page_fetcher.read_known_page / find_on_other_brand_sites`.
+Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (must find trailheadmn.com);
+`same_strain_check.py` (8 checks on two temporary test strains).
