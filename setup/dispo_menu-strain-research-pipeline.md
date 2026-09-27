@@ -341,3 +341,9 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
   COAs; hand-edited fields are kept.
 - Before turning Find other names on for the demo: add an nginx rate limit for `/api/strains/<id>/find-other-names`
   (it's admin-only and behind dev basic auth today) and decide whether it counts toward the 10-generation cap.
+- **Automatic (same day):** when research is thin (<2 pages) and the parents are known, the name search runs BEFORE
+  the AI writes; confirmed names are researched (free) and saved as Also known as. Tested on a fresh Double Sour Grape
+  with nothing typed: 0 -> 2 pages, full profile (flavors, effects, a real Misc fact), ~14c total, 79 s. The Generator
+  result now has a "Thin research" box (another name / a page -> Save & redo).
+- **Costs are developer-only:** `SHOW_COSTS=true` in dev shows each run's cost (result screen, Redo message) and the
+  cent figures in prompts; off (default) on the demo/production, where the server doesn't even send them.
