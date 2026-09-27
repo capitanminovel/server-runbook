@@ -310,3 +310,15 @@ fact. Research used to read only the SELECTED brand's site, and general strain s
 Code: `app/ai/strain_siblings.py`, `research.gather_research(...)`, `page_fetcher.read_known_page / find_on_other_brand_sites`.
 Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (must find trailheadmn.com);
 `same_strain_check.py` (8 checks on two temporary test strains).
+
+## Lab reports (COA PDFs) on strain cards — added 2026-09-27, dev only
+- **What:** an admin uploads a COA PDF on a strain card; the server pulls its text out once (pypdf, free) and the
+  "Redo profile using lab report" button (one paid call, ~10-17c, asks first) gives it to the Generator as research.
+- **Never the menu's terpene %:** those still come only from Sweed lab data (we can't be sure the COA is the batch on
+  the shelf). The prompt says so, and code sets lab terpenes anyway.
+- **Scanned COAs** (a picture, no text layer) are stored but marked "scanned" and not used. Reading them would need OCR
+  (too heavy for this droplet) or sending the PDF to Claude (~2-6c/generation), which we don't do without asking.
+- **Safety:** same upload rules as Education/Schedule (content-checked PDF, 25 MB, quota, random names). Parsing runs
+  in a separate process with a 20 s timeout and a 512 MB memory cap, so a hostile PDF can't hang the API.
+- **Switch:** `FEATURE_COA_FILES=true` in `/opt/dispo-menu/api/.env` (dev). Off by default; off = routes 404, research ignores it.
+- **Test:** `apps/api/scripts/coa_check.py` (free; temp strain, 11 checks).
