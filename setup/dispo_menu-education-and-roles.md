@@ -79,14 +79,10 @@ for the Active status badge (it carries meaning). Colours live as CSS variables 
 - Fonts/cmaps/wasm for PDF.js are copied into the build by `apps/admin/scripts/copy-pdfjs-assets.mjs` (the `prebuild` step), so nothing loads from a CDN.
 - **2 GB quota in practice:** ~550 PDFs the size of the 3.7 MB "Concentrates" test. Realistic mixes (PDFs 1–5 MB, slide decks 5–20 MB, photos <1 MB) land around 400–2,000 files. That's plenty for one dispensary's trainings. The quota is `UPLOAD_QUOTA_MB` in `.env`. The disk has about 9 GB free, so when several dispensaries fill up, the move is DigitalOcean Spaces (object storage).
 
-## Reading progress + "I've read this" (2026-09-27)
-Researched: staff-training portals work best with clear progress, search, short scannable cards, mobile-first, and
-sign-off on required reading (budtender guides stress compliance policies must be KNOWN — managers need to see it).
-- Staff: "Your reading" panel (Need to Read / New Hire progress bars + what's left), search, quick filters
-  (Not read yet / Need to Read / New Hire / Pinned), ✓ Read · Unread · "Updated — read again" badges; the viewer has an
-  "I've read this" bar + "Next ›" (onboarding flows training to training). Phones: viewer full screen, bar at the bottom.
-- Admin: "👁 N/M read" on cards; in the viewer, who has read the current version.
-- `training_reads` (per LOGIN) + `trainings.content_updated_at`: only name/description/video/file changes ask for a
-  re-read; tags, section and order don't.
-- **Limit:** one shared employee login = "the employee account read it", not which person. Individual logins (on the
-  roadmap) make this real sign-off tracking.
+## Search, quick filters, Next › (2026-09-27)
+- Search (names, descriptions, file names, sections), quick filters (Need to Read / New Hire / Pinned), "Next ›" inside
+  a training, full-screen viewer on phones with the Next bar at the bottom. Drag-to-rearrange pauses while filtering.
+- **Read tracking was built, tested (34 checks) and then removed the same day** at the user's call: trainings are open to
+  every employee. It's a FUTURE feature — see the roadmap. The full version (per-login "I've read this", Need to Read /
+  New Hire progress, Updated-read-again, admin who-read) is commit `5859779` in Dispo_menu; the removal is the next commit
+  (its migration dropped `training_reads` and `trainings.content_updated_at`).

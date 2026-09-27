@@ -35,7 +35,10 @@
 - [ ] Ask Legit's Sweed rep for an official Public API key (Ecom/Catalog only) + price — not urgent now that the direct read works.
 - [ ] Menu Editor tile (hide/feature strains, public fields, kiosk settings) — part of the customer-menu build.
 - [ ] Product History tile.
-- [ ] Individual employee logins (one shared employee login today) — now also needed for per-person Education read tracking.
+- [ ] Individual employee logins (one shared employee login today).
+- [ ] Later: Education read tracking / sign-off ("I've read this", required-reading progress, who has read what).
+  Built + tested 2026-09-27 then removed (trainings are open to all for now) — restore from Dispo_menu commit 5859779,
+  re-test with education_check. Only worth it once individual employee logins exist.
 - [ ] Onboarding plan for a whole menu (see below).
 - [ ] Production demo: separate domain + database + fresh secrets + `dev`/`main` branch split.
 - [ ] Schedule tile picture (`apps/admin/src/assets/schedule-icon.png`).
