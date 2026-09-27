@@ -8,7 +8,7 @@
 - [ ] Kiosk hardware (TV + mini PC or big tablet) + Chrome kiosk-mode setup at the store.
 - [ ] Fix profiles whose Indica/Sativa/Hybrid differs from the package (MAC Stomper); the menu already shows the store's label.
 - [ ] Real dispensary name in `dispensaries.name` (shows in the menu header) and a real domain.
-- [ ] Future product-domain ideas (no underscores allowed): yourdispotool.com, your-dispo-tool.com, dispotool.com, urdispotool.com.
+- [ ] Product domain: dispotool.com is taken (parked for sale, Afternic); free on 2026-09-27: yourdispotool.com, getdispotool.com, dispotools.com, urdispotool.com, dispotool.io. Decide + register (~$10-15/yr for .com).
 
 **Server / ops (waiting on you)**
 - [ ] Reboot for the new kernel (steps in "Server check + updates" below).
