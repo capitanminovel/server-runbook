@@ -32,6 +32,7 @@
 - [ ] Memory headroom: run Claude Code from the laptop, and/or resize to 2 GB.
 
 **Product**
+- [x] Admin Guide & Demo (.docx) — Dispo_menu/docs/guides/ (2026-09-27). [ ] Employee Guide next (short, simple).
 - [ ] Ask Legit's Sweed rep for an official Public API key (Ecom/Catalog only) + price — not urgent now that the direct read works.
 - [ ] Menu Editor tile (hide/feature strains, public fields, kiosk settings) — part of the customer-menu build.
 - [ ] Product History tile.
