@@ -347,3 +347,9 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
   result now has a "Thin research" box (another name / a page -> Save & redo).
 - **Costs are developer-only:** `SHOW_COSTS=true` in dev shows each run's cost (result screen, Redo message) and the
   cent figures in prompts; off (default) on the demo/production, where the server doesn't even send them.
+- **Compact terpene guide (2026-09-28):** the Generator now sends `app/ai/reference/terpenes_compact.md` (built by a
+  script from the full `terpenes_research.md`: every terpene's aroma + effects, synergies, caveats; no strain examples,
+  food sources, boiling points or citation details). 9.4k vs 18.6k cached tokens: a lab-data strain generated alone
+  costs ~6c less. Tested on Fight Club + Soap (20c): same terpene effects. Revert = one line in strain_generator.py.
+- **Real costs seen in dev:** thin strain with auto name search ~14c (Double Sour Grape) to ~25c (Tropical Fresa, cold
+  guide + long output); name search alone ~3.9c; write-up 3.5-21c depending on pages, lab data and cache.
