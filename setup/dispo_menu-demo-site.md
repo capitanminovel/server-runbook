@@ -49,3 +49,16 @@ journalctl -u dispo-menu-demo-api -f
 systemctl list-timers | grep demo
 sudo -u postgres psql -d dispo_menu_demo -c "select count(*) from ai_generations"   # generations used
 ```
+
+## Update 2026-09-28
+- Deployed the "hard-to-find strains" work to the demo: Also known as, Pages to read, lineage check, automatic
+  other-name search on thin research, Thin research box, Redo profile, "What's new" tip. `FEATURE_NAME_SEARCH=true`,
+  `NAME_SEARCH_LIMIT=20` (manual button; the automatic search only runs inside a Generate/Redo, so the 10-generation cap
+  covers it). nginx: `find-other-names` rate-limited like generating. **No `SHOW_COSTS`** -> no prices anywhere
+  (checked in a browser, including confirm pop-ups).
+- AI-generation count reset to 0 of 10 (user request).
+- Thin demo strains re-researched **in a Claude Code session** (free, `scripts/session_generate.py reresearch/update`,
+  same Generator research code): Double Sour Grape (aka Double Grape), Sunset Tea (aka Sun Tea), Burger Breath (Atlas
+  Seed pages), Terp Poison (GTR Seeds pages). Updated in place on demo + dev; live-menu links kept.
+- Guides updated (team site address, section 4.2 hard-to-find strains, 10-generation limit). Team email template:
+  `docs/guides/email-team-update-2026-09-28.md`. Open items: `setup/dispo_menu-review-list.md`.
