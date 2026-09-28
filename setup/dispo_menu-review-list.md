@@ -11,8 +11,9 @@ Tick these off (or move them into `dispo_menu-roadmap.md`) as they're decided.
 - [ ] **Fight Club**: no lineage anywhere. Ask Campfire Cannabis for the cross.
 - [ ] **Golden Goat**: research sites say sativa, the store says indica (the store label is shown). Confirm.
 - [ ] **Spot-check the 1–2 page profiles**: Hyperion F1, Jacked Up Boof, Block Party, Halle Berry, Wilfunk.
-- [ ] **Test duplicates on the demo**: #183 Double Sour Grape, #184 "Double Grape, Double Sour Grape", #185 Double
-      Grape (all Not active, unlinked) — archive + delete. Dev: #190 Tropical Fresa (wrong "Trop Strawberry" match).
+- [x] **Test duplicates deleted (2026-09-28):** demo #183–185; dev #186 (Double Sour Grape copy) and #190 (Tropical
+      Fresa, wrong "Trop Strawberry" match). #190 had taken the live-menu link from the original #152 Tropic Fresa, so
+      the link was moved back to #152 first. Rows backed up in `/root/backups/test-duplicates-20260928/`.
 - [ ] **JointCommerce** is often AI-written filler (Burger Breath "grilled meat", Wilfunk "extrapolated"). Consider
       removing it in the Generator's Sources tab, or keep it as a last resort (the lineage check already guards names).
 
