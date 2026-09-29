@@ -18,8 +18,10 @@ Tick these off (or move them into `dispo_menu-roadmap.md`) as they're decided.
       removing it in the Generator's Sources tab, or keep it as a last resort (the lineage check already guards names).
 
 ## Legal / going public
-- [ ] **Cautions list** is a first draft — needs legal review.
-- [ ] **Customer menu & kiosk wording** ("Reported uses", disclaimers) — legal review before they go public.
+- [ ] **Cautions list** is a first draft — needs legal review. (Hidden everywhere, admin cards included, since 2026-09-29.)
+- [ ] **Customer menu & kiosk: lawyer review** before going public. Done 2026-09-29 (see `concepts/mn-cannabis-advertising-rules.md`):
+      OCM warning verbatim everywhere, Reported uses + Cautions hidden, information-only notice. Still to ask: license
+      number/business name on the menu? hemp warning if THC edibles get listed? is the menu an "advertisement"?
 - [ ] **Domain** for the public menu (ideas: yourdispotool / dispotool / urdispotool).
 
 ## Features — decisions

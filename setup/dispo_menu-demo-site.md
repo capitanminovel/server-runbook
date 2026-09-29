@@ -62,3 +62,12 @@ sudo -u postgres psql -d dispo_menu_demo -c "select count(*) from ai_generations
   Seed pages), Terp Poison (GTR Seeds pages). Updated in place on demo + dev; live-menu links kept.
 - Guides updated (team site address, section 4.2 hard-to-find strains, 10-generation limit). Team email template:
   `docs/guides/email-team-update-2026-09-28.md`. Open items: `setup/dispo_menu-review-list.md`.
+
+## Update 2026-09-29: customer menu + kiosk preview
+- **legitdemo-menu.withcapitan.com** (+ `/kiosk`): nginx `sites-available/legitdemo-menu.withcapitan.com`, basic auth
+  (`/etc/nginx/.htpasswd-dispo-demo-menu`, user `legit`; password given to the user, not written here),
+  `X-Robots-Tag: noindex` + robots.txt, CSP `connect-src 'self'`. `/api/public/` is proxied to the demo API on this
+  host only (the main demo site still returns 404), so the password covers the data too. TLS by certbot.
+- `deploy.sh demo` builds the customer menu (empty API base URL, `VITE_DISPENSARY=dev-dispensary`) into
+  `/var/www/dispo-demo-menu`, and the admin's menu/kiosk tiles now point there.
+- Minnesota compliance on the menu: see `concepts/mn-cannabis-advertising-rules.md`.
