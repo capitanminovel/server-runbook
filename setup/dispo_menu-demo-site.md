@@ -71,3 +71,6 @@ sudo -u postgres psql -d dispo_menu_demo -c "select count(*) from ai_generations
 - `deploy.sh demo` builds the customer menu (empty API base URL, `VITE_DISPENSARY=dev-dispensary`) into
   `/var/www/dispo-demo-menu`, and the admin's menu/kiosk tiles now point there.
 - Minnesota compliance on the menu: see `concepts/mn-cannabis-advertising-rules.md`.
+- **Shared staff login (2026-09-29):** `team@legitdemo.com`, role **employee** (view-only; server-enforced — generate/redo
+  return 403). Password given to the user, not written here. Admins keep `admin@legitdemo.com`; individual logins are
+  still recommended (review list).
