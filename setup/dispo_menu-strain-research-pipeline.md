@@ -354,3 +354,16 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
   limiting terpene effects to the dominant terpenes).
 - **Real costs seen in dev:** thin strain with auto name search ~14c (Double Sour Grape) to ~25c (Tropical Fresa, cold
   guide + long output); name search alone ~3.9c; write-up 3.5-21c depending on pages, lab data and cache.
+
+## All-in-one research for hard-to-find strains (2026-09-30, dev)
+- **Why:** team test on the demo — "Grape Canyon Zkittlez" came out thin; Find other names later found "Grape
+  Zkittlez"; the admin then RENAMED the strain to steer the research, which lost the live-menu match. Same with
+  "Gorilla Zkittles" (typo of the menu's "Gorilla Zkittlez", which the lookup didn't find at all).
+- **Menu spelling check:** Sweed's search is whole-word ("Zkittles" misses "Zkittlez"). When the typed name finds
+  nothing, `lookup_sweed` compares it with every live-menu product name (one direct HTTPS read, 1–4 s). >= 0.88
+  similar -> that product is used (typed name kept, menu spelling saved as Also known as); 0.72–0.88 -> "did you mean"
+  shown under the result (rename + redo in one click).
+- **Use & redo:** one click saves the other name + its page and redoes the profile; the strain's name never changes.
+- **Name search** always tries two phrasings: `"Grape Ape" "Zkittlez" strain` and `Grape Ape x Zkittlez cannabis strain`.
+- **Tested (dev, 24c):** one Generate of "Grape Canyon Zkittlez" -> menu match, Grape Zkittlez found and researched
+  before writing, full profile. Test profile deleted.
