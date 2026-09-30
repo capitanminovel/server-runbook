@@ -365,5 +365,5 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
   shown under the result (rename + redo in one click).
 - **Use & redo:** one click saves the other name + its page and redoes the profile; the strain's name never changes.
 - **Name search** always tries two phrasings: `"Grape Ape" "Zkittlez" strain` and `Grape Ape x Zkittlez cannabis strain`.
-- **Tested (dev, 24c):** one Generate of "Grape Canyon Zkittlez" -> menu match, Grape Zkittlez found and researched
+- **Deployed to the demo 2026-09-30.** **Tested (dev, 24c):** one Generate of "Grape Canyon Zkittlez" -> menu match, Grape Zkittlez found and researched
   before writing, full profile. Test profile deleted.
