@@ -74,3 +74,13 @@ sudo -u postgres psql -d dispo_menu_demo -c "select count(*) from ai_generations
 - **Shared staff login (2026-09-29):** `team@legitdemo.com`, role **employee** (view-only; server-enforced — generate/redo
   return 403). Password given to the user, not written here. Admins keep `admin@legitdemo.com`; individual logins are
   still recommended (review list).
+
+## Update 2026-09-30: "Dispensary Tool", demo framing, what's still missing
+- User-facing name is now **Dispensary Tool** (was "Dispo Tool"): app, browser tab, home-screen name, guides
+  (`Dispensary-Tool-*.docx`), emails. Internal names (dispo_menu, dispo-menu-* services, hostnames) unchanged on purpose.
+- The demo is framed as **a demo of the idea for the team, to find gaps**: `SITE_NOTICE` in the demo `.env` shows a
+  banner on the dashboard; guides have "About this demo"; the "10-minute demo" section is now "A quick tour" (a live
+  walkthrough comes later); the manager/admin email (`docs/guides/email-admin-launch.md`) asks for feedback.
+- **Refresh live menu** now shows coverage ("39 of 44 menu products have a profile") and a **No profile yet** checklist
+  grouped by brand, each with **Generate** that pre-fills the Generator (name without PR/pack size, brand, type).
+- Removed the duplicate demo profile #187 "Grape Zkittlez" (the team re-made it as #188 Grape Canyon Zkittles).

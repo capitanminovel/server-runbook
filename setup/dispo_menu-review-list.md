@@ -4,7 +4,7 @@ Tick these off (or move them into `dispo_menu-roadmap.md`) as they're decided.
 
 ## Content — your call / needs a person
 - [ ] **Admin Guide in Education is the old PDF** (training #54, dev + demo). Open the new
-      `docs/guides/Dispo-Tool-Admin-Guide.docx`, save as PDF, **Replace file**. Consider adding the Employee Guide too.
+      `docs/guides/Dispensary-Tool-Admin-Guide.docx`, save as PDF, **Replace file**. Consider adding the Employee Guide too.
 - [ ] **Papaya Fuel lineage looks like a typo**: store says "Critical #13 x Ice #2"; the classic *Papaya* (Nirvana)
       is **Citral** #13 x Ice #2. Confirm with Unbound, fix the lineage in Edit, then Redo (it may be "Papaya").
 - [ ] **Swedish OG** (Uffda OG x Peach Bio): nothing online. Ask Tasty Gems for tasting notes -> "specifically included".
