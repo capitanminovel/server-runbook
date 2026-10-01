@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-30
 **Repos:** `mnlegitdev/legit-cannabis-south-metro-menu` (live) and `capitanminovel/legit-buddy-api` (same bug, same output)
-**Status:** diagnosed, **not yet fixed** (mnlegitdev repo, so we asked before pushing)
+**Status:** fixed 2026-10-01 in both mnlegitdev repos (south-metro `365d8af`, dinky-dope `f775fdb`); `capitanminovel/legit-buddy-api` still has the bug (left alone on purpose)
 
 ## What happened
 The user noticed that out-of-stock status on the South Metro menu didn't match the store. We compared it to a direct pull from Sweed (`storeid: 434`, all pages):
@@ -26,7 +26,7 @@ Git history shows in-stock flower sitting at **exactly 24 in every scrape for we
 2. The Playwright fallback (`try_playwright`) loads each category page and captures only the **first** `GetProductList` response the page makes, which holds 24 items. The page loads the rest on scroll, and the scraper never scrolls, so anything past item 24 is never seen.
 3. `merge()` marks anything not seen as `in_stock=False`. Items on page 2 are therefore treated as sold out. Sweed's sort order shifts between scrapes, so an item can move from page 1 to page 2 and flip to a false "Sold Out", which is what happened to Double Sour Grape.
 
-## Fix (proposed, not applied)
+## Fix (applied to mnlegitdev repos)
 Add the same store headers Dinky Dope uses to South Metro's `scraper.py`:
 ```python
 STORE_ID = 434
@@ -46,7 +46,13 @@ Secondary hardening (optional):
 - If a count stays at a round number (24) across weeks of scrapes, suspect a page-size cap before believing the inventory.
 - The "Direct API blocked" log line was misleading here. It was a 400 from a missing header, not a WAF block.
 
+## Also done in the same change (both mnlegitdev repos)
+- Added the **Concentrates** category (Sweed id 5251 for South Metro, 6453 for Dinky Dope) to `TARGET_CATS`, `SWEED_CATEGORIES`, `_CAT_NORM`, `CATEGORY_PAGE_URLS`, the `build_preview.py` `TARGET` list, the dark-mode section accent color and the guide text. Right now that's 3 Marawanna live rosins at each store.
+- Pagination now stops based on the raw page size Sweed returns, not the count after category filtering.
+- Verified with manual workflow runs. South Metro now shows 48 in stock (31 flower, 10 pre-roll, 4 edibles, 3 concentrates), and Dinky Dope shows 56. Both match a direct pull from Sweed. Dinky Dope's stock was already correct before this change (53 = 53).
+- The 6 recovered flower items show a "New" badge for 3 days, because the site had never recorded them before.
+
 ## Follow-up
-- [ ] Get the go-ahead to push the header fix to `mnlegitdev/legit-cannabis-south-metro-menu`
-- [ ] Same fix in `capitanminovel/legit-buddy-api`
-- [ ] Decide whether the menu should include categories it doesn't track today. The store also carries Hemp Derived THC Products (102), Wellness (23), Concentrates (3) and Accessories (17). These are excluded on purpose by `TARGET_CATS`, which may no longer be the right call.
+- [ ] `capitanminovel/legit-buddy-api` still has the missing-storeid bug. The user said to fix only the mnlegitdev repos.
+- [ ] The menus still exclude Hemp Derived THC Products, Wellness and Accessories. That's a deliberate product decision, so it's still open.
+- [ ] The terpene-order-as-dominance prompt bug in `enrich_strains.py` is still present in both mnlegitdev repos. The new concentrate profiles were generated with it.
