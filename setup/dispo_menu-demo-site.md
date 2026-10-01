@@ -84,3 +84,13 @@ sudo -u postgres psql -d dispo_menu_demo -c "select count(*) from ai_generations
 - **Refresh live menu** now shows coverage ("39 of 44 menu products have a profile") and a **No profile yet** checklist
   grouped by brand, each with **Generate** that pre-fills the Generator (name without PR/pack size, brand, type).
 - Removed the duplicate demo profile #187 "Grape Zkittlez" (the team re-made it as #188 Grape Canyon Zkittles).
+
+## Update 2026-10-01
+- Dashboard banner removed at the user's request (`SITE_NOTICE` deleted from the demo `.env`; the setting still exists
+  for later). Backup of the old `.env`: `/root/backups/demo-env-before-notice-removal.20261001`.
+- Refresh live menu checklist: **Generate these 4 / the first 4** opens the Generator's Batch tab pre-filled (name,
+  brand matched to ours, type); it runs them one at a time; the batch stops when the generation limit is reached.
+  Press Refresh again for the next 4.
+- Memory: the 1 GB droplet was swapping hard; three extra Claude Code sessions (~250 MB) were closed (one, PID 1047395,
+  needed a force-close that the user does). Upgrade path: snapshot -> power off -> Resize "CPU and RAM only" ->
+  Basic 2 GB (~$12/mo) -> power on -> check services.
