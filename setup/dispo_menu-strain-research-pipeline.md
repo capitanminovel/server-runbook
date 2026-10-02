@@ -392,3 +392,7 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
 - `scripts/compare_research.py` runs A today / B hybrid / C all-Gemini on the same strains, saves nothing, writes a
   report. Waiting on a Gemini API key (`/root/gemini.key`, root-only; sent in a header, never the URL).
 - The working copy stays on `main` (deploy.sh deploys whatever is checked out); the branch is on GitHub.
+
+## Architecture diagrams (2026-10-02)
+- Developer view (deployment, module flow, measured costs, proposed Gemini design): https://claude.ai/artifact/QJZFawuxCRHT7roFxhSBs4 (private). Source: `/root/artifacts/dispensary-tool-architecture.html`.
+- Plain-language Strain Generator page (no prices, shareable): https://claude.ai/artifact/3fvJJ1iyB8x3xZFDgNCgKv. Source: `/root/artifacts/strain-generator.html`.
