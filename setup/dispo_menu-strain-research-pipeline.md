@@ -381,3 +381,14 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
   are now kept as research pages.
 - **Tested in dev:** guard free (stopped, 0 generations logged); same-name check against a real page (kept; wrong
   parents still rejected); Nighthawk + Phylos page under Pages to read -> full profile, 6.7c. Test profile deleted.
+
+## Branch `gemini-research` (2026-10-02) — Gemini as searcher, our code as checker
+- Idea (user): use Google's search (Gemini API, "Grounding with Google Search") to FIND pages, keep our code as the
+  checker, keep Claude as the writer — or test Gemini as the writer too. Pricing checked on Google's page: 5,000 grounded
+  searches/month free on Gemini 3.x, then $14/1,000; Flash-Lite $0.30 / $2.50 per million tokens.
+- Gemini only *grounds* (links sentences to sources by its own judgment); it doesn't verify. So every page it proposes
+  is opened by our fetcher and a fact is kept only if its exact quote is on the page; pages must name the strain and not
+  different parents. Free test with a fake answer: the invented "Blue Dream x Rare Dankness" quote was dropped.
+- `scripts/compare_research.py` runs A today / B hybrid / C all-Gemini on the same strains, saves nothing, writes a
+  report. Waiting on a Gemini API key (`/root/gemini.key`, root-only; sent in a header, never the URL).
+- The working copy stays on `main` (deploy.sh deploys whatever is checked out); the branch is on GitHub.
