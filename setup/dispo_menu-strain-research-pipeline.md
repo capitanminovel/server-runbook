@@ -367,3 +367,17 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
 - **Name search** always tries two phrasings: `"Grape Ape" "Zkittlez" strain` and `Grape Ape x Zkittlez cannabis strain`.
 - **Deployed to the demo 2026-09-30.** **Tested (dev, 24c):** one Generate of "Grape Canyon Zkittlez" -> menu match, Grape Zkittlez found and researched
   before writing, full profile. Test profile deleted.
+
+## Lineage field, same-name pages, "nothing to go on" guard (2026-10-02, dev)
+- **Why:** the demo team generated "Nighthawk" — not on Legit's menu, no research-site pages, no lineage — and got an
+  empty profile for 7.6c.
+- **Guard:** Generate/Redo now stop BEFORE the AI call (422, free, nothing saved) when there's nothing to write from,
+  and tell the admin what to add (page, other name, lineage, notes; plus "close names on the menu" if any).
+- **Lineage field** (optional, "only if you're sure"): lets the search by parents run for products not on the menu, and
+  the prompt treats it as a stated fact. Caution confirmed in testing: a web-search summary said Nighthawk was
+  "Blue Dream x Rare Dankness", but the breeder (Phylos) page says (GMO x G2X) x (Galactic AF x LemonaideGMO-2) — a
+  wrong typed lineage would have rejected the real page.
+- **Same-name pages:** the parents search used to skip pages under the strain's own name; verified ones (same parents)
+  are now kept as research pages.
+- **Tested in dev:** guard free (stopped, 0 generations logged); same-name check against a real page (kept; wrong
+  parents still rejected); Nighthawk + Phylos page under Pages to read -> full profile, 6.7c. Test profile deleted.
