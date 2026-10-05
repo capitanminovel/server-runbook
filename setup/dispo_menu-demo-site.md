@@ -94,3 +94,13 @@ sudo -u postgres psql -d dispo_menu_demo -c "select count(*) from ai_generations
 - Memory: the 1 GB droplet was swapping hard; three extra Claude Code sessions (~250 MB) were closed (one, PID 1047395,
   needed a force-close that the user does). Upgrade path: snapshot -> power off -> Resize "CPU and RAM only" ->
   Basic 2 GB (~$12/mo) -> power on -> check services.
+
+## Update 2026-10-05
+- Team used 10/10 generations ($1.16 total, ~11.6c each). Limit raised to **16** (6 more tries) at the user's request:
+  `AI_GENERATION_LIMIT=16` (old `.env` backed up: `/root/backups/demo-env-before-limit-16.20261005`). The usage history
+  is kept (not reset), so the usage page still shows all 10 earlier runs.
+- Deployed to the demo: "nothing to go on" guard (verified on the demo: "Nighthawk" with nothing -> message, no
+  generation used, nothing saved), optional Lineage field, same-name pages from the parents search, and the fix for
+  "also known as" matching part of a name ("Blue Moon" had picked up Leafwell's "Blue Moonshine").
+- Seen in the team's runs: a duplicate Dante's Inferno (#193), empty Nighthawk (#192) and FrankenPine (#195), Atomic Pop
+  built from one JointCommerce page. Ideas: a duplicate warning before Generate; cleanup of #192/#193/#195 (ask first).
