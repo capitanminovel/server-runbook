@@ -63,3 +63,10 @@ ss -tlnp          # what's listening on which ports
 df -h             # disk usage
 free -h           # memory usage
 ```
+
+## Droplet size (2026-10-06)
+Resized by the user from 1 GB RAM / 24 GB disk to **2 GB RAM, 1 vCPU, 48 GB disk** (the disk grew too, so this resize
+can't be reversed). Reboot also moved the kernel to 6.8.0-142 (the pending kernel update). Right after boot: ~970 MB
+RAM available, swap almost unused (before: ~240 MB available, ~900 MB of swap in use). All services and timers came
+back on their own; UFW active. Measured: sites and APIs answer in 35–95 ms, the demo strain list (53 strains) in
+~40 ms, the customer-menu data in 50–95 ms.
