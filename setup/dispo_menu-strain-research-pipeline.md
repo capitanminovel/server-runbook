@@ -396,3 +396,18 @@ Tests: `research_check.py` case "Octane Mintz — Marawanna / concentrates" (mus
 ## Architecture diagrams (2026-10-02)
 - Developer view (deployment, module flow, measured costs, proposed Gemini design): https://claude.ai/artifact/QJZFawuxCRHT7roFxhSBs4 (private). Source: `/root/artifacts/dispensary-tool-architecture.html`.
 - Plain-language Strain Generator page (no prices, shareable): https://claude.ai/artifact/3fvJJ1iyB8x3xZFDgNCgKv. Source: `/root/artifacts/strain-generator.html`.
+
+## Gemini test set + rollout plan (2026-10-07)
+**Test set** (live-menu scan of South Metro + recent demo results):
+- New, never tried: Magic Marker (Float, flower) · Zesty Parm (Minny Grown, flower; store lineage Cherry Kush x
+  (Lemon Tree Papaya x GMO) x FroDo, no lab data) · Cap Junky, Oreo Hash Cake, Watermelon Rolex (MN First, live-resin vapes)
+- Hard / failed before: Nighthawk (now on the menu from Minny Grown) · FrankenPine (Minny Grown) · Atomic Pop (Campfire,
+  JointCommerce-only) · Blue Moon (Gopher State Ganja, vape; picked up "Blue Moonshine" before the fix)
+- Controls: Gastro Pop (Redwood) · Double Sour Grape (Tasty Gems)
+**Plan:** 0) user makes a Gemini key (AI Studio, billing on, budget alert) -> /root/gemini.key (600). 1) branch:
+compare_research.py takes `Name|Supplier|type` (vapes!) with this set as default; 1-cent connectivity check + exact model
+id. 2) comparison run A/B/C, nothing saved, est. $2-3 (state before running), scored on right plant, no invented facts,
+supported facts, pages found, cost, time. 3) if it wins: `RESEARCH_PROVIDER=claude|hybrid|gemini` in each .env;
+gather_research keeps lookup_sweed + Pages to read, calls Gemini, falls back to our site lookups if < 2 pages; skip
+Haiku name/fact searches when Gemini supplied them; Gemini cost into ai_generations; key in each .env (never git),
+header-only; fake-answer test + regression suites; dev first, then demo.
