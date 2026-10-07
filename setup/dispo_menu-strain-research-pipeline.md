@@ -411,3 +411,19 @@ supported facts, pages found, cost, time. 3) if it wins: `RESEARCH_PROVIDER=clau
 gather_research keeps lookup_sweed + Pages to read, calls Gemini, falls back to our site lookups if < 2 pages; skip
 Haiku name/fact searches when Gemini supplied them; Gemini cost into ai_generations; key in each .env (never git),
 header-only; fake-answer test + regression suites; dev first, then demo.
+
+## Gemini writing test 1: Zesty Parm (2026-10-07, free tier, no search)
+Same research for every writer (store listing + AllBud + Strainpedia). Store says "sativa dominant".
+| Writer | Est. paid cost | Time | Type | Notes |
+|---|---|---|---|---|
+| Claude Opus (today) | 10.4c | 18 s | sativa (right) | richest profile; fact from Strainpedia |
+| Gemini 3.8 Flash | ~0.7c (~1.5c from 2027) | 17 s | sativa (right) | specific fact (amber/purple late flower, resin for extracts), fewer flavors |
+| Gemini 3.5 Flash | ~1.6c | 29 s | hybrid | fact half-repeats the lineage |
+| Gemini 3.5 Flash-Lite | ~0.3c | 2 s | indica (WRONG) | duplicate effect, weak fact |
+- Checked against the pages: every 3.8 Flash fact claim (amber/purple undertones, resin for solventless/live resin,
+  cheese/garlic) is on Strainpedia -> nothing invented. AllBud lists ADD/ADHD/Arthritis/Inflammation (health claims; we
+  hide Reported uses anyway).
+- Prices (Google pricing page, paid tier, per 1M tokens in/out): 3.8 Flash $0.75/$3.75 until 2026-12-31 then
+  $1.50/$7.50; 3.5 Flash $1.50/$9.00; 3.5 Flash-Lite $0.30/$2.50. Estimates may miss "thinking" tokens (billed as output).
+- Takeaway: 3.8 Flash is the only Gemini writer worth testing further; one strain is not enough to switch.
+  Next: billing on -> search grounding (429 on free tier) -> full A/B/C run on the test set.
