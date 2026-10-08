@@ -43,3 +43,9 @@ asked, not a database of profiles.
 # re-read the section if Google changes it
 curl -sL https://ai.google.dev/gemini-api/terms | sed 's/<[^>]*>/ /g' | tr -s ' ' | grep -o 'Use Restrictions.\{0,2500\}'
 ```
+
+## Decision 2026-10-08 (user)
+Continue testing the hybrid (Gemini Search finds -> our code checks -> Claude writes) on the `gemini-research` branch,
+dev/test only: the user is the person asking, nothing is sold or shown to others, and test reports count as evaluation.
+Noted risk: the "Links ... for crawling or scraping" clause has no personal-use exception. **Not to reach the team demo
+or stored profiles** without Google's written permission or switching to the Gemini-writer-only design.
