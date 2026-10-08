@@ -427,3 +427,28 @@ Same research for every writer (store listing + AllBud + Strainpedia). Store say
   $1.50/$7.50; 3.5 Flash $1.50/$9.00; 3.5 Flash-Lite $0.30/$2.50. Estimates may miss "thinking" tokens (billed as output).
 - Takeaway: 3.8 Flash is the only Gemini writer worth testing further; one strain is not enough to switch.
   Next: billing on -> search grounding (429 on free tier) -> full A/B/C run on the test set.
+
+## Gemini finder test, full set (2026-10-08, gemini-3.8-flash, report /root/gemini-test/report-BC.md + report-A-today.md)
+| Strain | A today (our finders, Claude) | B hybrid (Gemini finds, Claude) | C (Gemini finds + writes) |
+|---|---|---|---|
+| Magic Marker | 4 sources, 48s, breeder lineage PM x RS-11 | 0 pages found, store only, 90s | same, 85s |
+| Zesty Parm | 3 sources, sativa (store agrees) | 2 pages, **indica** (AllBud page), 90s | indica, 103s |
+| Cap Junky | 4 sources | **failed (503)** | - |
+| Oreo Hash Cake | 1 source | 0 pages | same |
+| Watermelon Rolex | 1 source | 2 proposed, both rejected | same |
+| Nighthawk | 2 sources (Phylos autoflower) | same Phylos page | same |
+| FrankenPine | 2 sources | 2 Phylos pages (3 sources) | same |
+| Atomic Pop | 1 source (vague lineage) | **failed (503)** | - |
+| Blue Moon | 3 sources | **0 pages -> empty profile** | empty |
+| Gastro Pop | 5 sources | 1 kept, 352s (busy x3) | **failed (503)** |
+| Double Sour Grape | 4 sources | **failed (timeout)** | - |
+- Gemini's step alone took 32-343s (65-100s typical) vs ~20-50s for ALL of A; 3 of 11 B runs failed outright on Google
+  "high demand" even with 3 retries. Gemini reported **0 Google searches** on every strain: with the long JSON prompt
+  it answered from memory (the URLs it gave were real, and our checker still verified them).
+- Our checkers worked: rejected Phylos' different "Zesty Parm", and Leafly/Weedmaps (blocked). Two possible false
+  rejections to look at: Compound Genetics' own Gastro Pop collection page and 808 Genetics' Watermelon Rolex pages
+  ("names different parents" -- multi-strain pages / messy stored lineage).
+- C (Gemini writing from the same material) matched B's profiles closely at ~1/3 of the cost -> the writer idea holds.
+- Cost: B $0.62, C $0.19 (A earlier $1.26).
+- Verdict: Gemini as FINDER lost to today's pipeline (slower, less reliable, fewer pages, didn't actually search).
+  Gemini as WRITER is worth building with Claude fallback.
