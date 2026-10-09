@@ -459,3 +459,21 @@ found 0 pages and ran 0 Google searches even when told to search (2-4 min each, 
 (~10 min); 2.5 Flash returns 404 for new keys. Today's pipeline did the same strain in 48s with 4 sources.
 **Decision:** Gemini as research finder is not reliable -> dropped. Our finders + checkers stay. Gemini as a no-search
 WRITER (with Claude fallback) is the only Gemini idea still worth considering.
+
+## More (and safer) sources: 2026-10-09 (main 10fa6a2 + 9b14446, deployed to DEV only)
+- **New research sites on dev:** Flowzz (flowzz.com), StrainsDB (strainsdb.org), Phylos (seeds.phylos.bio). Free site
+  check on 6 test strains: Flowzz 4/6, StrainsDB 3/6, Phylos 2/6. Today's 4 dead sites (Leafwell, Cannaconnection,
+  Cannabis.net, Kalikori) found 0/6 -- candidates to remove after checking past runs. Blocked (never bypassed): Leafly,
+  GrowDiaries, North Atlantic.
+- **StrainsDB is sometimes wrong** (Cap Junky = "Captain Crunch x Wedding Cake"; breeder says Alien Cookies x Kush
+  Mints) -- useful, never a sole source.
+- **Gzipped sitemaps** (`.xml.gz`) are now read, unpacked at most 6 MB (zip-bomb guard). SeedFinder pages
+  (/strain-info/<strain>/<breeder>/) match, but SeedFinder's sitemaps omit most strains -> needs the breeder name.
+- **Lineage reader fixes:** "Apples & Bananas" (& / and), nested grandparents "(Watermelon Soda x Zlushies (...))",
+  bracketed notes "(Mac1 cut)", strain's own cross in brackets. "Genetics" in a breeder's name no longer counts as a
+  lineage statement. Tests: `scripts/lineage_check_test.py` 36/36.
+- **NEW check on own-name pages:** a research-site page that states a lineage naming fewer than HALF of our parents is
+  skipped as a different plant with the same name (Phylos "Zesty Parm" = Fro'Do x LilMissHS vs store's 4 parents).
+  Spelling/cut numbers ignored ("Do-Si-Dos" = "Dosidos", "Kush Mints #11" = "Kush Mints"). Pages with no lineage are
+  still used; the brand's own pages are never second-guessed. Known limit: "Non-GMO" reads as parent GMO (errs to keep).
+- research_check.py: 12 pass, 6 warn (products now off the live menu), 0 fail.
