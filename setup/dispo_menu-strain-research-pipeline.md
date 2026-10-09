@@ -477,3 +477,25 @@ WRITER (with Claude fallback) is the only Gemini idea still worth considering.
   Spelling/cut numbers ignored ("Do-Si-Dos" = "Dosidos", "Kush Mints #11" = "Kush Mints"). Pages with no lineage are
   still used; the brand's own pages are never second-guessed. Known limit: "Non-GMO" reads as parent GMO (errs to keep).
 - research_check.py: 12 pass, 6 warn (products now off the live menu), 0 fail.
+
+## Breeder pages, parent pages, lineage disagreements: 2026-10-09 (main c40f58d + e87401d, deployed to DEV only)
+- **Breeder pages** (`app/ai/breeders.py`): breeder names pulled from the store text + pages read ("bred by X",
+  "X Genetics/Seeds"; heading words and "<strain> Seeds" shop phrases filtered). Then the breeder's own site (27 known,
+  reachable breeder sites, checked 2026-10-09) and SeedFinder's /strain-info/<strain>/<breeder>/ page. Same
+  different-plant check as research sites.
+- **Parent-strain pages**: only when < 2 pages about the strain. One page per parent (max 3) from AllBud/Strainpedia/
+  Flowzz/CannMenus/SeedsHereNow. Writer rule: use only for flavors/aroma/effects not otherwise covered, phrase as
+  inherited ("from its Oreoz parent"); never for lineage/type/Misc/supplier text/reported uses. Don't count as pages
+  about the strain (Thin research box still shows).
+- **Lineage disagreement** (amber in "What was researched"): pages naming fewer than half our parents are still not
+  used, but the admin now sees what they say and where our lineage came from (store text = the TEAM's research, per
+  the user; or the admin's Lineage field). Child crosses ("GG4 x Kush Cleaner") and tag pages aren't disagreements.
+- **Menu names**: product words stripped (Live Resin/Rosin, Infused, 10ct, Cart, AIO, Badder...; NOT "Hash") ->
+  Refresh checklist prefill + spelling check. Zoap 10ct went 0 -> 6 pages.
+- Page reader: a mid-download stall is now a normal fetch error.
+- **Free coverage check** `scripts/source_coverage.py` (hard strains + 2 random per supplier, report
+  /root/gemini-test/source-coverage.md). Run 2026-10-09: hard avg 1.8 pages (6/10 thin; 4 got parent pages, 2
+  breeder pages); random avg 3.5 (7/18 thin). Disagreements found: Cap Junky (StrainsDB: Captain Crunch x Wedding
+  Cake), Zesty Parm (Phylos), OG Kush (famously disputed). Still empty: Watermelon Rolex, Atomic Pop (1 page),
+  brand-named vapes/infused (Citrus Slushy, Tropic Fresa, Mixed Fruit).
+- Tests: lineage 40/40, alias 5/5, research_check 12 pass / 6 warn (off-menu) / 0 fail.
