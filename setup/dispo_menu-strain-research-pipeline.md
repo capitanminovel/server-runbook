@@ -452,3 +452,10 @@ Same research for every writer (store listing + AllBud + Strainpedia). Store say
 - Cost: B $0.62, C $0.19 (A earlier $1.26).
 - Verdict: Gemini as FINDER lost to today's pipeline (slower, less reliable, fewer pages, didn't actually search).
   Gemini as WRITER is worth building with Claude fallback.
+
+## Gemini finder: dropped (2026-10-09)
+Finder-only model test (finder_models.py on branch gemini-research) stopped after 1 of 11 strains: 3.8 and 3.7 Flash
+found 0 pages and ran 0 Google searches even when told to search (2-4 min each, with "busy" retries); 3.5 Flash timed out
+(~10 min); 2.5 Flash returns 404 for new keys. Today's pipeline did the same strain in 48s with 4 sources.
+**Decision:** Gemini as research finder is not reliable -> dropped. Our finders + checkers stay. Gemini as a no-search
+WRITER (with Claude fallback) is the only Gemini idea still worth considering.
