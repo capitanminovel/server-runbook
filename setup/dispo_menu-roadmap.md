@@ -1,6 +1,13 @@
 # dispo_menu — roadmap and open items (kept current)
 
 ## STILL TO DO — one list (updated 2026-09-26)
+**Marked for later (2026-10-14):**
+- [ ] **COA reader** -- turn uploaded lab-report PDFs into real THC + terpene numbers (would fill the ~48% of menu products
+      with no Sweed lab data). Candidate source: Cannlytics' lab-specific parsers (MIT, github.com/cannlytics/cannlytics,
+      cannlytics/data/coas/algorithms: SC Labs, ACS, Kaycha, Confident Cannabis...). FIRST collect 3-5 real COA PDFs from
+      Legit's brands to see which labs they come from; port only the matching parser (keep the MIT notice), no pandas;
+      vet per the skill checklist; before/after test.
+- [ ] Before customer #2: see `concepts/dispo_menu-saas-architecture.md` (per-tenant Sweed config is the blocker).
 **Customer menu + kiosk: v1 BUILT 2026-09-26** (`setup/dispo_menu-customer-menu.md`). Still to do for it:
 - [ ] Compliance/legal review (effects + "Reported uses" wording, 21+ gate, Cautions) → then remove the dev password.
 - [ ] Full profiling run of the menu (in a Claude session, not API tokens) — products without a profile don't show.
