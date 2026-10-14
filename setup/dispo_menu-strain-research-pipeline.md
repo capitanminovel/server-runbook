@@ -542,3 +542,31 @@ WRITER (with Claude fallback) is the only Gemini idea still worth considering.
 - Why: the menu is a staff tool used in front of customers; measured numbers + scent help a budtender explain the
   difference without effect claims. Checked in a headless browser at 1280px and 390px (no sideways page scroll).
 - Still on dev: the per-product "Terpenes often linked with: Calm..." line (mostly "Calm"; see concepts note).
+
+## Session profiling run + fixes (2026-10-14, dev; main d3ac6c9, 6ad5321)
+- 23 menu strains profiled in-session with `scripts/session_generate.py` (no API cost): #199-#221. Left out: Glitter
+  Bomb (kept for the owner's manual test), "Grape Canyon Zkittles" (store typo of Zkittlez -> one profile), Mixed Fruit
+  (dizgo "Mixed Strains" blend: nothing published, not profiled -- ask dizgo). New strains are Not active until linked
+  (Refresh live menu suggests links). Brands added on dev without websites (not confirmed): Float, Minny Grown Cannabis,
+  Dabney's Cannabis Co., MN First, Northpark.
+- BUG FIXED: the store lookup could pick another brand's product of the same strain (Float "PR Cap Junky" tied with
+  Campfire's exact "Cap Junky" and lost) -> wrong listing AND wrong lab data. `match_menu_products` now ranks the
+  supplier's brand first. Affects the app's Generate too.
+- Ratio rule: a lone source that contradicts the store's indica/sativa label isn't shown (GG4: Leafwell "37% indica").
+- Page reader: drops site-furniture lines and long repeated blocks (`page_fetcher._JUNK_LINE`).
+
+## Open-source evaluation (2026-10-14) -- none added
+Vetted per the skill checklist (license, maintainers, wheel-only download + source read, deps, pip-audit: no known vulns).
+| Package | Result on our data | Decision |
+|---|---|---|
+| Trafilatura 2.3.1 (Apache-2.0) | 73 pages: junk -62% but facts kept 196/452 vs ours 267 (recall mode 228) | not added |
+| Our junk-line filter | junk -37%, facts kept 267/267 | ADDED (own code) |
+| RapidFuzz 3.14.6 (MIT) | stdlib matcher enough for ~50 products | not added |
+| extruct 0.9.0 | pulls rdflib 4.2.2 (2017) + 12 deps; pages' JSON-LD is SEO filler | not added |
+| Cannlytics 1.0.5 (MIT) | COA parser pulls pandas/numpy/cryptography/pillow | not added (maybe a separate worker later) |
+| OpenTHC vdb | GPL-3 | excluded (owner) |
+pip-audit lives in its own venv: /root/tools/pip-audit (not in the app).
+
+## Waiting games (2026-10-14, dev)
+Terpene Match, 2048, Snake, Terp Word -- our own small implementations (game ideas are free to use; code/brand names
+like Tetris/Wordle are not, so nothing copied). `apps/admin/src/games/`, shown in the Generator while it works and at /games.
