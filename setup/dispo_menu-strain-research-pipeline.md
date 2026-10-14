@@ -529,3 +529,16 @@ WRITER (with Claude fallback) is the only Gemini idea still worth considering.
 - **Remote Control** (`claude rc` / `claude remote-control`): drive a session on this server from claude.ai/code or
   the phone app. Must be started from a trusted project folder (not /root): run `claude` once in /root/Dispo_menu,
   accept the trust prompt, then `claude rc --name dispo`. Runs as root -> keep 2FA on the claude.ai account.
+
+## Menu: per-product lab numbers + side-by-side Compare (2026-10-14, dev only, main 47635e0)
+- Menu refresh keeps each linked size's own lab result (every terpene) in `strain_sweed_links.variants[].lab`; re-read
+  only when that size's THC / total-terpene numbers change (new harvest), max 25 store reads per refresh.
+- Customer menu "On the shelf now" shows each product's THC, total terpenes and top 5 terpenes; the profile's terpene
+  list keeps names only (its % came from one product).
+- **Compare** (web menu, not kiosk yet): "+ Compare" under each card, pick 2-3, tray at the bottom -> side-by-side
+  table: THC, total terpenes, terpene bars on one scale, "Stands out on our menu" (a terpene whose SHARE of the product
+  is >= 1.5x the menu's typical share and >= 8% of its terpenes; share, so concentrates compare fairly with flower),
+  reported flavors, price. Only strains with lab terpenes can be compared (11 of 20 on dev).
+- Why: the menu is a staff tool used in front of customers; measured numbers + scent help a budtender explain the
+  difference without effect claims. Checked in a headless browser at 1280px and 390px (no sideways page scroll).
+- Still on dev: the per-product "Terpenes often linked with: Calm..." line (mostly "Calm"; see concepts note).
