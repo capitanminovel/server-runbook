@@ -31,4 +31,4 @@ numbers into feelings ("myrcene = relaxing"). This note records how solid that i
 - The store's own effect tags include health claims ("Stress Relief") -- never show them unfiltered (MN 342.64).
 
 ## Key commands
-    cd /root/Dispo_menu/apps/api && venv/bin/python <scratch>/menu_terps.py   # re-measure the menu (free, ~70 store reads)
+    cd /root/Dispo_menu/apps/api && venv/bin/python scripts/menu_terpenes.py   # re-measure the menu (free, ~70 store reads)
