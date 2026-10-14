@@ -570,3 +570,15 @@ pip-audit lives in its own venv: /root/tools/pip-audit (not in the app).
 ## Waiting games (2026-10-14, dev)
 Terpene Match, 2048, Snake, Terp Word -- our own small implementations (game ideas are free to use; code/brand names
 like Tetris/Wordle are not, so nothing copied). `apps/admin/src/games/`, shown in the Generator while it works and at /games.
+
+## More "take and make ours" (2026-10-14, dev)
+- **Link-density filter (Trafilatura's idea)**: tested on the same 73 pages -- 10-15% less junk but every threshold lost
+  1-2 facts (some sites write parent strains as links: "crossing [Original Glue] X [Zkittlez]"). Not added.
+- **2048 pop/merge animations**: own code (respects reduced-motion). **Courses**: new `sort` and `hotspot` activity types
+  (`courses/blocks.tsx`, drawn diagram in `courses/diagrams.tsx`); Terpenes 101 smell-family sort; Product Types
+  "Anatomy of a bud". Browser-tested desktop + phone.
+- **OpenTHC vdb reviewed** (~450 lines PHP, GPL-3, LICENSE file + boot.php/webroot/main.php headers): a website/API to
+  search a strain-NAME list where each name has a permanent ID, with CSV/SQL/XML download. The list itself isn't in the
+  repo; their data terms weren't found. Parameterized SQL (safe); SQL-export quoting bug. Nothing we need. GPL-3 applies
+  when software is DISTRIBUTED (running it on our own server isn't); a line-by-line translation is still a derivative;
+  a from-scratch build of the same idea is fine. Not legal advice.
