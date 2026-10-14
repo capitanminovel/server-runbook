@@ -32,3 +32,16 @@ numbers into feelings ("myrcene = relaxing"). This note records how solid that i
 
 ## Key commands
     cd /root/Dispo_menu/apps/api && venv/bin/python scripts/menu_terpenes.py   # re-measure the menu (free, ~70 store reads)
+
+## Test: open lab data (Cannlytics) vs our menu (2026-10-14)
+- Data: Cannlytics `cannabis_results` on Hugging Face (CC BY 4.0, credit Cannlytics if used in the app). Used FL, MA,
+  UT files (14,688 results with terpenes, mostly 2019-2024); MD/MI/OR files had no per-terpene rows. Full set is 2.5 GB.
+  Files + scripts: /root/cannlytics (build.py -> profiles.json, compare.py). No Minnesota data.
+- Nationally caryophyllene leads 41% of results (our store: 58%), so "Calm for everything" wasn't a quirk of our data.
+- **Baseline for "stands out": our own menu wins.** MN products run higher in humulene (0.22% vs 0.12% national median)
+  and linalool (0.21% vs 0.11%), so a national baseline flags humulene on most of our shelf -- true nationally, useless
+  to a customer comparing our products. Our-menu baseline: 21/26 products get a standout; same top standout as the
+  national baseline for only 7/26.
+- **"Typical for this strain name" check: not reliable enough to show.** Only 10/26 of our names have >= 3 samples
+  elsewhere; our product matched its name better than a random sample for 6/10. Strong match: Cap Junky (51 samples,
+  0.93-0.96). Mismatches: Trainwreck (a vape; added terpenes likely), MAC Stomper (3 samples). Maybe an admin-only hint later.

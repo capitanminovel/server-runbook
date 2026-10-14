@@ -517,3 +517,15 @@ WRITER (with Claude fallback) is the only Gemini idea still worth considering.
   The store also spells the jar "Zkittles" (typo) -- one profile, link all three products.
 - Free check on the 7 unprofiled strains (`/root/gemini-test/new-strains-coverage.md`): Glitter Bomb 8 pages, Gorilla
   Zkittlez 7, Super Boof 7, Dante's Inferno 5, Cherry Kush 5, Pina Colada 3, Grape Canyon Zkittlez 0 (parent pages).
+
+## Claude Code skill + MCP for this repo (2026-10-14)
+- **Skill** `.claude/skills/dispo-research-rules/SKILL.md` (in the repo, so CLI and Claude Code web both see it): the
+  owner's standing rules -- source trust order, no bot-block workarounds, Claude only, no health claims, state cost
+  before paid tests, dev-only deploys, document in runbook.
+- **MCP** `.mcp.json`: Playwright browser (Microsoft's official `@playwright/mcp`, pinned 0.0.83, headless, isolated
+  profile) so Claude can click through the dev admin/menu and check pages. Claude Code asks to approve project MCP
+  servers the first time. Only for our own pages. Why pinned: an MCP server runs with this server's permissions, so an
+  unpinned `@latest` would let a compromised release run code here.
+- **Remote Control** (`claude rc` / `claude remote-control`): drive a session on this server from claude.ai/code or
+  the phone app. Must be started from a trusted project folder (not /root): run `claude` once in /root/Dispo_menu,
+  accept the trust prompt, then `claude rc --name dispo`. Runs as root -> keep 2FA on the claude.ai account.
