@@ -499,3 +499,21 @@ WRITER (with Claude fallback) is the only Gemini idea still worth considering.
   Cake), Zesty Parm (Phylos), OG Kush (famously disputed). Still empty: Watermelon Rolex, Atomic Pop (1 page),
   brand-named vapes/infused (Citrus Slushy, Tropic Fresa, Mixed Fruit).
 - Tests: lineage 40/40, alias 5/5, research_check 12 pass / 6 warn (off-menu) / 0 fail.
+
+## Decision: Claude only, and the target design (2026-10-14)
+- **Writer = Claude only, for now.** Gemini is not used anywhere (finder dropped 2026-10-09; writer only ever tested on
+  1 strain: 3.8 Flash close but thinner). At ~10-13c per profile, 100 strains is ~$13 -- not worth thinner profiles or
+  a second system. Revisit only if volume reaches hundreds of profiles a month.
+- **Reliability order:** lab data (store per-product lab, COA) > brand/breeder's own page > team's store text (hint) >
+  trusted strain sites > parent pages (inherited traits only). AI searching on its own: not trusted.
+- **Design: code gathers and checks, AI only writes, admin decides.** Steps still to build, in order (all free):
+  1. Per-product "this batch" section: THC, total terpenes, top terpenes from Sweed GetExtendedLabdata per product;
+     the strain profile keeps typical terpenes (no %). Numbers only, no effect claims.
+  2. Thin-research gate (< 2 pages about the strain -> "ask the brand" instead of a full profile) + "Ask the brand" list.
+  3. After writing: check every fact appears on one of the pages read.
+  Then a paid Claude test on the 7 unprofiled strains (~90c).
+- **Why per-product:** same strain, different batches differ a lot. Float Grape Canyon Zkittlez 2026-10-12: jar THC
+  16.9%, terps 2.06% (limonene 0.48, myrcene 0.17) vs pre-rolls THC 19.8%, terps 1.38% (limonene 0.11, myrcene 0.04).
+  The store also spells the jar "Zkittles" (typo) -- one profile, link all three products.
+- Free check on the 7 unprofiled strains (`/root/gemini-test/new-strains-coverage.md`): Glitter Bomb 8 pages, Gorilla
+  Zkittlez 7, Super Boof 7, Dante's Inferno 5, Cherry Kush 5, Pina Colada 3, Grape Canyon Zkittlez 0 (parent pages).
