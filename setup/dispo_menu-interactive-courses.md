@@ -41,3 +41,16 @@ terpenes can't produce a ratio (labels don't track chemistry). Super Boof: tie 5
 | Median research time | 12 s | 25 s |
 Same code with dev's 12 sites gave 3.06 vs 3.12 pages: most of the page gain is the 3 added sites; the code adds
 breeder/parent info and the wrong-plant / disagreement checks.
+
+## Device guides: Puffco (2026-10-15)
+- New section on the Education page, "Device guides: Puffco": Peak Pro, Peak (New 2024 + Original), Proxy (New + OG),
+  Pivot. File: `apps/admin/src/courses/content/puffco.ts`. A course's optional `section` field puts it under its own heading.
+- **Video block** (`type: 'video'`): plays the official Puffco video inside the lesson, with an "open in a new tab" link.
+  **Why the privacy players:** YouTube links play through `youtube-nocookie.com` and Vimeo with `dnt=1`, so opening a
+  lesson doesn't set tracking cookies on staff browsers. **Why `referrerPolicy` on the iframe:** YouTube now refuses
+  embeds that send no referrer, and the demo site's `Referrer-Policy: same-origin` header would otherwise strip it.
+- **Facts come only from puffco.com support pages** (listed at the top of puffco.ts), not from memory. The 12 video
+  links were checked to be official Puffco uploads (YouTube/Vimeo oEmbed titles).
+- Vimeo blocks headless test browsers ("couldn't verify the security of your connection") -- a bot check, not a bug;
+  real browsers play fine. Don't try to get around it.
+- To add another device brand: a new `content/<brand>.ts` with `section: 'Device guides: <Brand>'`, list it in `courses/index.ts`.
