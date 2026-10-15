@@ -99,8 +99,8 @@ recognized everything as already-linked with zero new flags — confirms idempot
 Both dev-preview passwords were originally random-generated (20/16 char) and hard to type
 repeatedly during a demo. Swapped for memorable-but-still-reasonable values, kept different from
 each other so a leak of one doesn't expose both layers:
-- Basic Auth (`dispo`): `LegitDemo2026!`
-- App login (`admin@dispo-menu.dev`): `GreenLeaf2026!`
+- Basic Auth (`dispo`): <given to the user in chat, not written here>
+- App login (`admin@dispo-menu.dev`): <given to the user in chat, not written here>
 
 Acceptable tradeoff for a dev/demo environment with no real customer data, especially with
 rate limiting already in place on both the Basic Auth-protected origin and `/api/auth/login`
