@@ -51,7 +51,7 @@ cd /opt/money_buddy && git pull && systemctl restart money-buddy
 
 ## Login hardening (commit `e0210aa`)
 - **Removed `verify=False`** from the Google token and user-info calls. With it, the server didn't check that it was really talking to Google, so the sign-in exchange could be intercepted. Verified TLS to Google works from the venv.
-- **Added an OAuth `state` cookie,** checked on callback with `secrets.compare_digest`. This blocks login CSRF: tricking your browser into finishing an attacker's login.
+- ~~OAuth `state` cookie~~: **reverted** (commit `c50e807`) because it broke phone login. See `incidents/money_buddy-login-broken-by-oauth-state-2026-10-29.md`.
 - **Dropped `access_type=offline`.** It asked Google for a refresh token the app never uses.
 - **Session cookie is now `Secure`** (only ever sent over HTTPS).
 - **Test:** sign out and back in on the phone once.
