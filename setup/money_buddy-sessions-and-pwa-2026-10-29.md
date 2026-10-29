@@ -56,6 +56,14 @@ cd /opt/money_buddy && git pull && systemctl restart money-buddy
 - **Session cookie is now `Secure`** (only ever sent over HTTPS).
 - **Test:** sign out and back in on the phone once.
 
+## Statement periods + fresh start (commit `f93658e`)
+- **Post dates:** uploads now store Chase's **Post Date**. Statements are cut by post date, not purchase date.
+- **Statement period:** a statement can have a start and end date (kept in the `settings` tab). The statement check, running total, To-tag list and Save session only count transactions posted inside it; the rest stay open, labeled "Earlier statement" or "Next statement".
+- **Find:** type an amount (or tap "Use last payment"). The app tries every unbroken run of dates and looks for one where charges − refunds equal the amount: exact matches first, otherwise the closest 3. Trying date ranges instead of arbitrary combinations means there's normally one clear answer.
+- **Sessions** now record `statement_total`, `period_start` and `period_end`.
+- **Fresh start:** `migrations/2026_10_29_fresh_start.py --apply` copied Sheet1 (463 rows) and sessions (3 rows) to `*_archive_2026-10-29` tabs, then emptied the working tabs. `raw_transactions` was left untouched.
+- **Limit:** Find only matches if the payment was the full statement balance. Partial payments, interest or fees mean no exact match.
+
 ## Native app decision
 - No APK. Chrome's "Install app" already installs a real Android package (a WebAPK) on the phone.
 - A sideloaded APK wrapping the site (a TWA) would need about 2 GB of Android build tools on the server, a signing key to protect, and "install unknown apps" turned on.

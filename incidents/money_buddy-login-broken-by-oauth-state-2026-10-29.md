@@ -17,5 +17,17 @@ Removed the state cookie and its check (commit `c50e807`). These stay: TLS verif
 - Login CSRF needs the app to *accept* the attacker's account. `ALLOWED_EMAILS` already rejects outsiders, so the check added little here.
 - Cookie-based checks across an app → Google → app round trip can break when the phone hands off between browsers. Test real logins on the actual device before calling auth work done.
 
+## Second cause found (commit `056a640`)
+- Logs then showed Google's return link opened **twice** in the same second. The first open logged in, and the second reused the single-use code and failed.
+- **Why:** the installed app's manifest had `scope: "/"`, so the app claimed `/auth/callback`, and Chrome handed the link to it a second time.
+- **Fixes:**
+  - manifest `scope` is now `/static/`
+  - the callback skips the code exchange if you're already signed in
+  - a failed exchange sends you back to login with a "tap again" message
+
+## Same day: upload never reached the server
+- No `POST /upload` showed up in the app or nginx logs, so the file never left the phone.
+- **Likely cause:** Android's file picker grays out files when the input lists only extensions (`.csv,.xlsx`). Added the matching file types too (`text/csv`, the Excel ones).
+
 ## Follow-up
-- Confirm phone login works after the fix.
+- Confirm phone login and upload work after the fixes.
