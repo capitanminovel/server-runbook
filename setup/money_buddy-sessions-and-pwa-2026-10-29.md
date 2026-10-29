@@ -43,7 +43,24 @@ venv/bin/python migrations/2026_10_29_sessions.py --apply  # backup + write
 cd /opt/money_buddy && git pull && systemctl restart money-buddy
 ```
 
+## Statement check (added later the same day, commit `6795985`)
+- A card at the top of the Tag page. Type the statement's **charges** total and it's compared to the open list.
+- **What it compares against:** charges − refunds ("net"). Gross charges also count as a match, because Chase's summary lists Purchases before credits are applied. Payments are shown but never counted.
+- **Shared, not per-device:** stored in a new `settings` tab (`statement_total`), so everyone sees the same number.
+- **When you save a session,** the value is copied to `sessions.statement_total` and cleared for the next statement.
+
+## Login hardening (commit `e0210aa`)
+- **Removed `verify=False`** from the Google token and user-info calls. With it, the server didn't check that it was really talking to Google, so the sign-in exchange could be intercepted. Verified TLS to Google works from the venv.
+- **Added an OAuth `state` cookie,** checked on callback with `secrets.compare_digest`. This blocks login CSRF: tricking your browser into finishing an attacker's login.
+- **Dropped `access_type=offline`.** It asked Google for a refresh token the app never uses.
+- **Session cookie is now `Secure`** (only ever sent over HTTPS).
+- **Test:** sign out and back in on the phone once.
+
+## Native app decision
+- No APK. Chrome's "Install app" already installs a real Android package (a WebAPK) on the phone.
+- A sideloaded APK wrapping the site (a TWA) would need about 2 GB of Android build tools on the server, a signing key to protect, and "install unknown apps" turned on.
+- The user chose the Chrome install.
+
 ## Follow-up
-- `auth.py` uses `httpx.AsyncClient(verify=False)` for the Google token exchange, which turns off TLS certificate checks. Remove it and test login.
-- Parked idea: a manual statement-total field to reconcile against the calculated total. Define the math first (payments, refunds, prior balance).
+- Two people saving a session at the same moment could both get the same session number. That's acceptable with 3 users.
 - Two people saving a session at the same moment could both get the same session number. That's acceptable with 3 users.
