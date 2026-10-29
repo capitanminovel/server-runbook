@@ -26,4 +26,4 @@ git push
 - If the venv isn't ignored, a habitual `git add .` would commit thousands of server-specific package files.
 
 ## Follow-up
-- Check the other `/opt` repos (`capitans_terps`, `dispo-menu`) for the same issues: unpushed commits and an unignored venv.
+- Checked the same day: `capitans_terps` is clean and in sync. `/opt/dispo-menu*` are deploy targets, not git repos (their code comes from the source repo via `deploy.sh`), so nothing to check there.
