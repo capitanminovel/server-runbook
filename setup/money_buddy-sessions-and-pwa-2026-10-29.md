@@ -64,6 +64,19 @@ cd /opt/money_buddy && git pull && systemctl restart money-buddy
 - **Fresh start:** `migrations/2026_10_29_fresh_start.py --apply` copied Sheet1 (463 rows) and sessions (3 rows) to `*_archive_2026-10-29` tabs, then emptied the working tabs. `raw_transactions` was left untouched.
 - **Limit:** Find only matches if the payment was the full statement balance. Partial payments, interest or fees mean no exact match.
 
+## Balance tab: who paid, running balance, payment plans
+- **Who paid:** card payments have a `paid_by` column (J / B / joint / none), set from a "Who paid?" picker on the Tag page. A joint payment credits half to each person.
+- **Starting point:** `ledger_start` in the `settings` tab is the date the card was last at $0. `/balance` groups charges into stretches that end at each payment (by post date) and tracks paid − share per person. The settled result is the transfer between J and B; the stretch after the last payment is the open bill.
+- **Payment plans:** stored as JSON under `plans` in the `settings` tab. Each line is one of:
+  - a live figure (the settled transfer, or a person's share of the open bill)
+  - a share of one transaction (e.g. half a flight)
+  - a fixed amount
+
+  Any line can also have an adjustment and says who pays it. The page shows each plan with a total per person.
+- **Sharing:** "Share as text" opens the phone's share sheet; "Copy" copies the same text.
+- **Cleanup:** removed unused code and the one-time migration scripts (they're in git history).
+- Household amounts and names are kept out of this runbook on purpose, because this repo is public.
+
 ## Native app decision
 - No APK. Chrome's "Install app" already installs a real Android package (a WebAPK) on the phone.
 - A sideloaded APK wrapping the site (a TWA) would need about 2 GB of Android build tools on the server, a signing key to protect, and "install unknown apps" turned on.
