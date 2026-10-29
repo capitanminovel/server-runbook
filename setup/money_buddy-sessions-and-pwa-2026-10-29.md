@@ -63,4 +63,3 @@ cd /opt/money_buddy && git pull && systemctl restart money-buddy
 
 ## Follow-up
 - Two people saving a session at the same moment could both get the same session number. That's acceptable with 3 users.
-- Two people saving a session at the same moment could both get the same session number. That's acceptable with 3 users.
