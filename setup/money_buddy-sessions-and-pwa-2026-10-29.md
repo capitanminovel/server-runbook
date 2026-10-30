@@ -106,3 +106,12 @@ cd /opt/money_buddy && git pull && systemctl restart money-buddy
   - `.8 * 12 / 12` is `0.8000000000000002` in floating point, so the last coin's threshold came out a hair above 100%. It now uses an epsilon.
   - CSS transforms on SVG `<g>` need `transform-box: fill-box` to scale around their own center.
 - The old plans JSON was saved locally before it was replaced. The settings `plans` key now holds a single plan.
+- **Second theme: Minnesota wildflowers.** You switch between "Money tree" and "Wildflowers" on the card. The choice is saved per device in `localStorage` (`mb-payoff-theme`), wrapped in try/catch.
+  - Twelve hand-drawn native species bloom one per 1/12 of the goal. The last is the state flower (showy lady's slipper), and monarchs appear when it's paid off.
+  - The sky clears as it grows: a sunny gradient layer fades in over a gray one, the sun rises, and the gray clouds drift off.
+- **Open-source art considered, not used:**
+  - Fluent Emoji (MIT), Twemoji (CC-BY 4.0) and OpenMoji (CC-BY-SA 4.0) only have generic flowers, no Minnesota species.
+  - Mixing their style with ours would look inconsistent.
+  - Third-party SVGs can carry scripts, so they'd need vetting.
+  - Hand-drawn inline SVG means no dependency and nothing to license.
+- **Gotcha:** a plan line for a charge that is also tagged to a person counts it twice. Tag it **or** list it in the plan, not both.
