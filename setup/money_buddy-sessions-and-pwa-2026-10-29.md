@@ -91,3 +91,18 @@ cd /opt/money_buddy && git pull && systemctl restart money-buddy
 - H/R live in the row dropdown ("Not split") so the row stays J · B · T. A row shows an H or R button only once one is chosen (tap it to clear).
 - Card payments have J / B / H buttons on the row. H stores `paid_by=joint`, which credits half to each person.
 - Test gotcha: a refund appears twice in the CSV, once as the charge (taggable) and once as the credit (not taggable). Pick the row by sign as well as amount.
+
+## Pay-back tracker ("money tree"), 2026-10-30
+- A plan can have a `payoff` block: `{label, who, to, lines}`. Its lines are priced like plan lines and summed into a live `goal`.
+- Direct payments between people (cash or bank transfer, not on the card) go in a new **`payoffs`** sheet tab: `payment_id, date, amount, note, added_by, added_at`. The tab is created on the first payment.
+- **API:**
+  - `POST /payoff` takes `{amount: 0 < x ≤ 100000, note ≤ 200}`. The date is set on the server in America/Chicago, since the server clock is UTC.
+  - `DELETE /payoff/{32-hex id}` removes a payment. It deletes the sheet row with a `deleteDimension` request.
+  - `/balance` attaches `payments` and `paid` to the plan.
+- **UI:** an inline SVG tree on the plan card. Seed → sprout → tree (full size at 75%), with 12 coins that each stand for 1/12 of the goal. Paid off adds sparkles and fallen coins.
+  - All motion is CSS transitions and keyframes, and is off under `prefers-reduced-motion`.
+  - The previous progress is kept in memory, so adding a payment animates from the old state.
+- **Gotchas:**
+  - `.8 * 12 / 12` is `0.8000000000000002` in floating point, so the last coin's threshold came out a hair above 100%. It now uses an epsilon.
+  - CSS transforms on SVG `<g>` need `transform-box: fill-box` to scale around their own center.
+- The old plans JSON was saved locally before it was replaced. The settings `plans` key now holds a single plan.
