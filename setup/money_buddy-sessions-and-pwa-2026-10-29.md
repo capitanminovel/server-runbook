@@ -88,5 +88,6 @@ cd /opt/money_buddy && git pull && systemctl restart money-buddy
 ## Excluded tags + payer buttons (2026-10-30, commit `78932e7`)
 - **H** (paid from the joint bank account) and **R** (refunded) are tags that mean "handled, nobody owes it". `shares()` returns `{}` for them, as opposed to `None` for untagged. So they count as tagged (they leave the To-tag list and get saved with the session) but add nothing to J/B totals or the balance ledger.
 - Totals shows H as its own series. R is left out because the money came back.
+- H/R live in the row dropdown ("Not split") so the row stays J · B · T. A row shows an H or R button only once one is chosen (tap it to clear).
 - Card payments have J / B / H buttons on the row. H stores `paid_by=joint`, which credits half to each person.
 - Test gotcha: a refund appears twice in the CSV, once as the charge (taggable) and once as the credit (not taggable). Pick the row by sign as well as amount.
